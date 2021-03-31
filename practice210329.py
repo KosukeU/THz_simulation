@@ -7,8 +7,10 @@ import disp
 root = tk.Tk()
 root.geometry("400x350")
 
-btn=tk.Button(text="ファイルを開く", command =disp.openFile)
-print(disp.openFile())
+lst = []	#globalで変数を格納
+
+btn=tk.Button(text="ファイルを開く", command = disp.openFile)
+print(lst)
 imageLabel = tk.Label()
 btn.pack()
 imageLabel.pack()
