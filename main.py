@@ -79,7 +79,7 @@ ax_gamma = plt.axes([0.25, 0.10, 0.65, 0.03], facecolor='gold')
 ax_alpha = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor='gold')
 
 #スライダーの調整
-sli_j = Slider(ax_j, 'Amplitude', 0.5, 1.5, valinit=j, valstep=0.01)
+sli_j = Slider(ax_j, 'Amplitude', 0.5, 1.0, valinit=j, valstep=0.01)
 sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 4, valinit=omega0, valstep=0.01)
 sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 1, valinit=gamma0, valstep=0.01)
 sli_alpha = Slider(ax_alpha, 'InitialPhase', -2, 2, valinit=alpha0, valstep=0.01)
