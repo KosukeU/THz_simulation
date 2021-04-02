@@ -17,7 +17,7 @@ plt.subplots_adjust(left=0.25, bottom=0.35)
 j = 1.0
 omega0 = 1.9
 gamma0 = 0.26
-alpha0 = -1.53
+alpha0 = 0.25
 
 j01 = j*10**-19
 omegaB1 = omega0*2.0*np.pi*10**12
@@ -79,9 +79,9 @@ ax_gamma = plt.axes([0.25, 0.10, 0.65, 0.03], facecolor='gold')
 ax_alpha = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor='gold')
 
 #スライダーの調整
-sli_j = Slider(ax_j, 'Amplitude', 0.5, 1.0, valinit=j, valstep=0.01)
-sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 4, valinit=omega0, valstep=0.01)
-sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 1, valinit=gamma0, valstep=0.01)
+sli_j = Slider(ax_j, 'Amplitude', 0.1, 1.0, valinit=j, valstep=0.01)
+sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 2, valinit=omega0, valstep=0.01)
+sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 0.5, valinit=gamma0, valstep=0.01)
 sli_alpha = Slider(ax_alpha, 'InitialPhase', -2, 2, valinit=alpha0, valstep=0.01)
 
 #スライダーの有効化
