@@ -14,10 +14,10 @@ fig, ax = plt.subplots(figsize=(6,6))
 plt.subplots_adjust(left=0.25, bottom=0.35)
 
 #初期値の設定,可変部を分離して定義
-j = 1.0
+j = 0.5
 omega0 = 1.9
 gamma0 = 0.26
-alpha0 = -1.53
+alpha0 = 0.25
 
 j01 = j*10**-19
 omegaB1 = omega0*2.0*np.pi*10**12
@@ -49,7 +49,6 @@ def emission(j0, omegaB, gamma, alpha):
 	E = np.convolve(E_tmp, gaussian_ld) * j0 
 	return E
 
-#tau = np.arange(-2, 8, 0.01)
 
 #グラフの描画
 #ax1 = fig.add_subplot(3, 1, 1)
@@ -63,14 +62,15 @@ t = np.linspace(-2, 8, 1001)
 Em1 = emission(j01, omegaB1, gamma1, alpha1)
 
 #軸の設定
-plt.xlim(-1.0,2.0)
+plt.xlim(-2.0,3.0)
+plt.ylim(-3.0*10**-6,3.0*10**-6)
 plt.xlabel('Time (ps)')
 plt.ylabel('Amplitude (a.u.)')
 
 plt.grid('x=0')
 
 l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5) 
-dt, = ax.plot(-3,0, "o", color="k", label='value of data', markersize=1)
+dt, = ax.plot(-3,0, color="k", label='value of data', markersize=1)
 
 #スライダーの設置
 ax_j = plt.axes([0.25, 0.20, 0.65, 0.03], facecolor='gold')
@@ -79,9 +79,9 @@ ax_gamma = plt.axes([0.25, 0.10, 0.65, 0.03], facecolor='gold')
 ax_alpha = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor='gold')
 
 #スライダーの調整
-sli_j = Slider(ax_j, 'Amplitude', 0.5, 1.5, valinit=j, valstep=0.01)
-sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 4, valinit=omega0, valstep=0.01)
-sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 1, valinit=gamma0, valstep=0.01)
+sli_j = Slider(ax_j, 'Amplitude', 0.05, 0.7, valinit=j, valstep=0.005)
+sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 2, valinit=omega0, valstep=0.01)
+sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 0.7, valinit=gamma0, valstep=0.005)
 sli_alpha = Slider(ax_alpha, 'InitialPhase', -2, 2, valinit=alpha0, valstep=0.01)
 
 #スライダーの有効化

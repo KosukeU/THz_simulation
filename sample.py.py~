@@ -63,14 +63,13 @@ Em1 = emission(j01, omegaB1, gamma1, alpha1)
 
 #軸の設定
 plt.xlim(-2.0,3.0)
-plt.ylim(-3.0*10**-6,3.0*10**-6)
 plt.xlabel('Time (ps)')
 plt.ylabel('Amplitude (a.u.)')
 
 plt.grid('x=0')
 
 l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5) 
-dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=1)
+dt, = ax.plot(-3,0, "o", color="k", label='value of data', markersize=1)
 
 #スライダーの設置
 ax_j = plt.axes([0.25, 0.20, 0.65, 0.03], facecolor='gold')
@@ -79,9 +78,9 @@ ax_gamma = plt.axes([0.25, 0.10, 0.65, 0.03], facecolor='gold')
 ax_alpha = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor='gold')
 
 #スライダーの調整
-sli_j = Slider(ax_j, 'Amplitude', 0.05, 0.7, valinit=j, valstep=0.005)
+sli_j = Slider(ax_j, 'Amplitude', 0.05, 0.5, valinit=j, valstep=0.01)
 sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 2, valinit=omega0, valstep=0.01)
-sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 0.7, valinit=gamma0, valstep=0.005)
+sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 0.5, valinit=gamma0, valstep=0.01)
 sli_alpha = Slider(ax_alpha, 'InitialPhase', -2, 2, valinit=alpha0, valstep=0.01)
 
 #スライダーの有効化
