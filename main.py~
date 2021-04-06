@@ -70,7 +70,7 @@ plt.ylabel('Amplitude (a.u.)')
 plt.grid('x=0')
 
 l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5) 
-dt, = ax.plot(-3,0, color="k", label='value of data', markersize=1)
+dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=1)
 
 #スライダーの設置
 ax_j = plt.axes([0.25, 0.20, 0.65, 0.03], facecolor='gold')

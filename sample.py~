@@ -6,9 +6,6 @@ import FileOpen as fo
 
 mpl.use('tkAgg')
 
-c1,c2,c3 = "blue","green","red"	#色の用意
-l1,l2,l3 = "gaussian","E_tmp","E"	#ラベルの用意
-#fig = plt.figure()
 
 fig, ax = plt.subplots(figsize=(6,6))
 plt.subplots_adjust(left=0.25, bottom=0.35)
@@ -35,11 +32,11 @@ def emission(j0, omegaB, gamma, alpha):
 
 	for t in range(-100, 400):
 			if t == 0:
-					E_tmp[t + 101] = np.cos(alpha) * 10**12 *10**2
+					E_tmp[t + 101] = 0
 			elif t>0:
-					E_tmp[t + 101] = -gamma*np.exp(-gamma * t * 10**-12 * 10**-2) * np.cos(omegaB * t * 10**-12 * 10**-2 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-2) * np.sin(omegaB * t * 10**-12 * 10**-2 + alpha)
+					E_tmp[t + 101] = np.cos(omegaB1*t*10**-12 * 10**-2 +alpha) * np.exp(-gamma1*t)
 			else:
-					pass
+					E_tmp[t + 101] = 0
 
 	a = np.log(2) * 4/(0.28*10**-12)**2
 
@@ -68,7 +65,7 @@ plt.ylabel('Amplitude (a.u.)')
 
 plt.grid('x=0')
 
-l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5) 
+l,= ax.plot(t, Em1, linestyle='solid', linewidth = 0.5) 
 dt, = ax.plot(-3,0, "o", color="k", label='value of data', markersize=1)
 
 #スライダーの設置
