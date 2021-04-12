@@ -108,6 +108,12 @@ exportax = plt.axes([0.05, 0.7, 0.1, 0.04])
 buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 
 
+def WriteFile(event):
+    plt.close()
+
+buttonex.on_clicked(WriteFile)
+
+
 #インポートボタンの設置
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
 buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
