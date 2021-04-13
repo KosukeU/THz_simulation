@@ -27,6 +27,8 @@ def file_open():
     app.text_1.set('Type : ' + str(type(ret)))
     app.text_2.set('Content : ' + str(ret))
 
+'''
 root = tkinter.Tk()
 app = Application(master=root)
 app.mainloop()
+'''

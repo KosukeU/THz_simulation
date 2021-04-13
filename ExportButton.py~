@@ -23,7 +23,7 @@ class Application(tkinter.Frame):
 def file_open():
     f_type = [('Text', '*.txt'), ('CSV', '*.csv')]
     ini_dir = r'C:\\Users\UedaKosuke\Documents\UEDA'
-    ret = tkinter.filedialog.asksaveasfilename(defaulttexttension='txt', filetypes=f_type, initialdir=ini_dir, title = 'file Dialog test')
+    ret = tkinter.filedialog.asksaveasfile(defaultextension='txt', filetypes=f_type, initialdir=ini_dir, title = 'file Dialog test')
     app.text_1.set('Type : ' + str(type(ret)))
     app.text_2.set('Content : ' + str(ret))
 

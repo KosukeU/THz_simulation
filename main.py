@@ -2,7 +2,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider, Button
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import FileOpen as fo
+import tkinter as tk
+import ExportButton as eb
 
 mpl.use('tkAgg')
 
@@ -110,6 +113,7 @@ buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 
 def WriteFile(event):
     plt.close()
+    eb.file_open()
 
 buttonex.on_clicked(WriteFile)
 
@@ -138,8 +142,25 @@ def reset(event):
 
 button.on_clicked(reset)
 
+def _destroyWindow():
+    root.quit()
+    root.destroy()
+
+root = tk.Tk()
+root.withdraw()
+root.protocol('WM_DELETE_WINDOW', _destroyWindow)
+
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.draw()
+canvas.get_tk_widget().pack()
+
+root.update()
+root.deiconify()
+root.mainloop()
+
+
 #plt.title("TeraHerzEmission")
-plt.show()
+#plt.show()
 '''
 def export(event):
 	plt.close()
