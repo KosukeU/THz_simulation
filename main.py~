@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider, Button
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from tkinter import filedialog as fd
 import FileOpen as fo
 import tkinter as tk
-import ExportButton as eb
+import os
 
 mpl.use('tkAgg')
 
@@ -32,10 +33,6 @@ E_tmp = [0] * 501
 gaussian_ld = [0] * 501		#zero埋めした配列の準備
 
 def emission(j0, omegaB, gamma, alpha):
-	#J_tmp = [0] * 501
-	#E_tmp = [0] * 501
-	#gaussian_ld = [0] * 501
-
 	for t in range(-100, 400):
 			if t == 0:
 					E_tmp[t + 101] = np.cos(alpha) * 10**12 *10**2
@@ -49,7 +46,7 @@ def emission(j0, omegaB, gamma, alpha):
 	for t in range(-100, 400):
 		gaussian_ld[t + 101] = np.exp(-a * (t * 10**-12 * 10**-2)**2)
 
-	E = np.convolve(E_tmp, gaussian_ld) * j0 
+	E = np.convolve(E_tmp, gaussian_ld) * j0
 	return E
 
 
@@ -58,12 +55,12 @@ def emission(j0, omegaB, gamma, alpha):
 #ax2 = fig.add_subplot(3, 1, 2)
 #ax3 = fig.add_subplot(1, 1, 1)
 
-t = np.linspace(-2, 8, 1001)
+t = np.round(np.linspace(-2, 8, 1001))
 
 #ax1.plot(gaussian_ld, color=c1, label=l1)
 #ax2.plot(E_tmp, color=c2, label=l2)
 Em1 = emission(j01, omegaB1, gamma1, alpha1)
-
+Em3 = Em1
 #軸の設定
 plt.xlim(-2.0,3.0)
 plt.ylim(-3.0*10**-6,3.0*10**-6)
@@ -72,7 +69,7 @@ plt.ylabel('Amplitude (a.u.)')
 
 plt.grid('x=0')
 
-l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5) 
+l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5)
 dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=1)
 
 #スライダーの設置
@@ -98,6 +95,8 @@ def update(val):
 	gamma2 = 1/(sgamma * 10**-12)
 	alpha2 = salpha
 	Em2 = emission(j02, omegaB2, gamma2, alpha2)
+	global Em3
+	Em3 = Em2
 	l.set_ydata(Em2)
 	fig.canvas.draw_idle()
 
@@ -110,13 +109,41 @@ sli_alpha.on_changed(update)
 exportax = plt.axes([0.05, 0.7, 0.1, 0.04])
 buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 
+def createExportWindow():
+    f_type = [('Text', '*.txt'),('csv', '*.csv')]
+    ini_dir = r'C:\\Users\UedaKosuke\Documents\UEDA'
+    filename = fd.asksaveasfilename(defaultextension='txt', filetypes=f_type, initialdir=ini_dir, title = 'Export As ...')
+    if filename:
+        with open(filename, mode='w',encoding='utf-8') as f:
+            root, ext = os.path.splitext(filename)
+            print(ext)
+            for pair in zip(t,Em3):
+                print(*pair, file=f)
+
+        if ext == '.txt':
+            with open(filename, encoding='utf-8') as f:
+                data_lines = f.read()
+                datalines=data_lines.replace(' ','\t')
+
+        else: 
+            with open(filename, encoding='utf-8') as f:
+                data_lines = f.read()
+                datalines=data_lines.replace(' ',',')
+        with open(filename, mode='w', encoding='utf-8') as f:
+            print(datalines, file=f)
+
+root = tk.Tk()
+#root.geometry('700x700')
+btn = tk.Button(root, text='Export', command=createExportWindow)
+btn.place(x=650, y=650)
+
 
 def WriteFile(event):
-    root.close()
-    eb.file_open()
+    createExportWindow()
+    #plt.close()
+    #eb.file_open()
 
 buttonex.on_clicked(WriteFile)
-
 
 #インポートボタンの設置
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
@@ -146,7 +173,7 @@ def _destroyWindow():
     root.quit()
     root.destroy()
 
-root = tk.Tk()
+#root = tk.Tk()
 root.withdraw()
 root.protocol('WM_DELETE_WINDOW', _destroyWindow)
 
