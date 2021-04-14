@@ -1,32 +1,42 @@
-import tkinter
-import tkinter.filedialog
+import tkinter as tk
 
-class Application(tkinter.Frame):
-    def __init__(self, master=None):
+class Application(tk.Frame):
+    def __init__(self,master):
         super().__init__(master)
-        self.master = master
-        self.master.title('tkinter dialog trial')
         self.pack()
-        self.create_widgets()
+        master.geometry('300x300')
+        master.title("base window")
 
-    def create_widgets(self):
-        self.dialog_button = tkinter.Button(self, text='Save File As ...', command=file_open, width=120)
-        self.dialog_button.pack(anchor=tkinter.NW)
+        self.window=[]
+        self.user=[]
 
-        self.text_1 = tkinter.StringVar()
-        self.type_label = tkinter.Label(self, textvariable=self.text_1)
-        self.type_label.pack(anchor=tkinter.W)
-        self.text_2 = tkinter.StringVar()
-        self.content_label = tkinter.Label(self, textvariable=self.text_2)
-        self.content_label.pack(anchor=tkinter.W)
+        self.button = tk.Button(master,text='create a window',command=self.buttonClick,width=10)
+        self.button.place(x=100, y=150)
+        self.button.config(fg='black', bg='skyblue')
 
-def file_open():
-    f_type = [('Text', '*.txt'), ('CSV', '*.csv')]
-    ini_dir = r'C:\\Users\UedaKosuke\Documents\UEDA'
-    ret = tkinter.filedialog.asksaveasfilename(defaulttexttension='txt', filetypes=f_type, initialdir=ini_dir, title = 'file Dialog test')
-    app.text_1.set('Type : ' + str(type(ret)))
-    app.text_2.set('Content : ' + str(ret))
+    def buttonClick(self):
+        self.window.append(tk.Toplevel())
+        self.user.append(User(self.window[len(self.window)-1],len(self.window)))
 
-root = tkinter.Tk()
-app = Application(master=root)
-app.mainloop()
+class User(tk.Frame):
+    def __init__(self,master,num):
+        super().__init__(master)
+        self.pack()
+        self.num = num
+        master.geometry('300x300')
+        master.title(str(self.num)+'aaaaa')
+
+        self.button = tk.Button(master,text='bbbb',command = self.buttonClick,width=20)
+        self.button.place(x=70,y=150)
+        self.button.config(fg='black', bg='pink')
+
+    def buttonClick(self):
+        print('this is'+(self.num)+'window')
+            
+def main():
+    win = tk.Tk()
+    app=Application(win)
+    app.mainloop()
+
+if __name__=='__main__':
+    main()
