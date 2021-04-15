@@ -141,7 +141,20 @@ flag1 = 0
 def AppChange():
     timres_value = timres.get()
     global tm
-    tm = timres_value
+    tm = float(timres_value)
+    sj = sli_j.val
+    somega = sli_omega.val
+    sgamma = sli_gamma.val
+    salpha = sli_alpha.val
+    j02 = sj*10**-19
+    omegaB2 = somega * 2.0 * np.pi* 10 **12
+    gamma2 = 1/(sgamma * 10**-12)
+    alpha2 = salpha
+    Em2 = emission(j02, omegaB2, gamma2, alpha2)
+    global Em3
+    Em3 = Em2
+    l.set_ydata(Em2)
+    fig.canvas.draw_idle()
 
 def timeres():
     global flag1, timres, tmlabel, appbtn
@@ -163,7 +176,7 @@ def timeres():
         appbtn.place_forget()
         flag1 = 0
 
-btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 13)
+btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
 btn.place(x=602, y=550)
 
 def WriteFile(event):

@@ -141,10 +141,10 @@ flag1 = 0
 def AppChange():
     timres_value = timres.get()
     global tm
-    tm = timres_value
+    tm = float(timres_value)
 
 def timeres():
-    global flag1
+    global flag1, timres, tmlabel, appbtn
     if flag1 == 0:
         timres = tk.Entry(root, width=5)
         timres.insert(0, tm)
@@ -163,7 +163,7 @@ def timeres():
         appbtn.place_forget()
         flag1 = 0
 
-btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 13)
+btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
 btn.place(x=602, y=550)
 
 def WriteFile(event):
