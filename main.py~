@@ -22,6 +22,7 @@ j = 0.5
 omega0 = 1.9
 gamma0 = 0.26
 alpha0 = 0.25
+tm = 0.28
 
 j01 = j*10**-19
 omegaB1 = omega0*2.0*np.pi*10**12
@@ -41,7 +42,7 @@ def emission(j0, omegaB, gamma, alpha):
 			else:
 					pass
 
-	a = np.log(2) * 4/(0.28*10**-12)**2
+	a = np.log(2) * 4/(tm*10**-12)**2
 
 	for t in range(-100, 400):
 		gaussian_ld[t + 101] = np.exp(-a * (t * 10**-12 * 10**-2)**2)
@@ -55,7 +56,7 @@ def emission(j0, omegaB, gamma, alpha):
 #ax2 = fig.add_subplot(3, 1, 2)
 #ax3 = fig.add_subplot(1, 1, 1)
 
-t = np.round(np.linspace(-2, 8, 1001))
+t = np.round(np.linspace(-2, 8, 1001),2)
 
 #ax1.plot(gaussian_ld, color=c1, label=l1)
 #ax2.plot(E_tmp, color=c2, label=l2)
@@ -133,15 +134,40 @@ def createExportWindow():
             print(datalines, file=f)
 
 root = tk.Tk()
-#root.geometry('700x700')
-btn = tk.Button(root, text='Export', command=createExportWindow)
-btn.place(x=650, y=650)
+root.geometry('700x600')
 
+flag1 = 0
+
+def AppChange():
+    timres_value = timres.get()
+    global tm
+    tm = timres_value
+
+def timeres():
+    global flag1
+    if flag1 == 0:
+        timres = tk.Entry(root, width=5)
+        timres.insert(0, tm)
+        timres.place(x=620,y=450)
+
+        tmlabel = tk.Label(root, text='(ps)')
+        tmlabel.place(x=650, y=450)
+
+        appbtn = tk.Button(root, text='Apply', command=AppChange)
+        appbtn.place(x=620, y=500)
+        flag1 = -1
+
+    else:
+        timres.place_forget()
+        tmlabel.place_forget()
+        appbtn.place_forget()
+        flag1 = 0
+
+btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 13)
+btn.place(x=602, y=550)
 
 def WriteFile(event):
     createExportWindow()
-    #plt.close()
-    #eb.file_open()
 
 buttonex.on_clicked(WriteFile)
 
@@ -173,13 +199,13 @@ def _destroyWindow():
     root.quit()
     root.destroy()
 
-#root = tk.Tk()
 root.withdraw()
 root.protocol('WM_DELETE_WINDOW', _destroyWindow)
 
 canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.get_tk_widget().grid(row=0, column=0)
 canvas.draw()
-canvas.get_tk_widget().pack()
+#canvas.get_tk_widget().pack()
 
 root.update()
 root.deiconify()
@@ -188,12 +214,3 @@ root.mainloop()
 
 #plt.title("TeraHerzEmission")
 #plt.show()
-'''
-def export(event):
-	plt.close()
-	exname = input()
-	fileoutput.output(exname)
-
-
-buttonex.on_clicked(export)
-'''
