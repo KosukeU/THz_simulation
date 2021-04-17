@@ -126,12 +126,19 @@ def createExportWindow():
                 data_lines = f.read()
                 datalines=data_lines.replace(' ','\t')
 
-        else: 
+        else:
             with open(filename, encoding='utf-8') as f:
                 data_lines = f.read()
                 datalines=data_lines.replace(' ',',')
         with open(filename, mode='w', encoding='utf-8') as f:
             print(datalines, file=f)
+
+
+def WriteFile(event):
+    createExportWindow()
+
+buttonex.on_clicked(WriteFile)
+
 
 root = tk.Tk()
 root.geometry('700x600')
@@ -159,30 +166,26 @@ def AppChange():
 def timeres():
     global flag1, timres, tmlabel, appbtn
     if flag1 == 0:
-        timres = tk.Entry(root, width=5)
-        timres.insert(0, tm)
-        timres.place(x=620,y=450)
-
-        tmlabel = tk.Label(root, text='(ps)')
-        tmlabel.place(x=650, y=450)
-
-        appbtn = tk.Button(root, text='Apply', command=AppChange)
-        appbtn.place(x=620, y=500)
-        flag1 = -1
+    	timres = tk.Entry(root, width=5)
+    	timres.insert(0, tm)
+    	timres.place(x=620,y=450)
+    	tmlabel = tk.Label(root, text='(ps)')
+    	tmlabel.place(x=650, y=450)
+    	appbtn = tk.Button(root, text='Apply', command=AppChange)
+    	appbtn.place(x=620, y=500)
+    	root.geometry('700x700')
+    	flag1 = -1
 
     else:
         timres.place_forget()
         tmlabel.place_forget()
         appbtn.place_forget()
+        root.geometry('700x600')
         flag1 = 0
 
 btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
 btn.place(x=602, y=550)
 
-def WriteFile(event):
-    createExportWindow()
-
-buttonex.on_clicked(WriteFile)
 
 #インポートボタンの設置
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
@@ -206,7 +209,7 @@ def reset(event):
 	sli_gamma.reset()
 	sli_alpha.reset()
 
-button.on_clicked(reset)
+button.on_clicked(timeres)
 
 def _destroyWindow():
     root.quit()
