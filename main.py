@@ -226,7 +226,3 @@ canvas.draw()
 root.update()
 root.deiconify()
 root.mainloop()
-
-
-#plt.title("TeraHerzEmission")
-#plt.show()
