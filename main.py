@@ -191,12 +191,7 @@ btn.place(x=602, y=550)
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
 buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
 
-def FileOpen(event):
-	data_store = fo.openFile()
-	data_axis = data_store[0]
-	data_value = data_store[1]
-	dt.set_data(data_axis,data_value)
-buttonim.on_clicked(FileOpen)
+buttonim.on_clicked(fo.FileOpen)
 #ファイルのimport
 
 #リセットボタンの設置
