@@ -5,6 +5,7 @@ from matplotlib.widgets import Slider, Button
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog as fd
 import FileOpen as fo
+import FileExport as fe
 import tkinter as tk
 import os
 
@@ -110,34 +111,7 @@ sli_alpha.on_changed(update)
 exportax = plt.axes([0.05, 0.7, 0.1, 0.04])
 buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 
-def createExportWindow():
-    f_type = [('Text', '*.txt'),('csv', '*.csv')]
-    ini_dir = r'C:\\Users\UedaKosuke\Documents\UEDA'
-    filename = fd.asksaveasfilename(defaultextension='txt', filetypes=f_type, initialdir=ini_dir, title = 'Export As ...')
-    if filename:
-        with open(filename, mode='w',encoding='utf-8') as f:
-            root, ext = os.path.splitext(filename)
-            print(ext)
-            for pair in zip(t,Em3):
-                print(*pair, file=f)
-
-        if ext == '.txt':
-            with open(filename, encoding='utf-8') as f:
-                data_lines = f.read()
-                datalines=data_lines.replace(' ','\t')
-
-        else:
-            with open(filename, encoding='utf-8') as f:
-                data_lines = f.read()
-                datalines=data_lines.replace(' ',',')
-        with open(filename, mode='w', encoding='utf-8') as f:
-            print(datalines, file=f)
-
-
-def WriteFile(event):
-    createExportWindow()
-
-buttonex.on_clicked(WriteFile)
+buttonex.on_clicked(fe.WriteFile)
 
 
 root = tk.Tk()
@@ -192,7 +166,6 @@ importax = plt.axes([0.05, 0.8, 0.1, 0.04])
 buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
 
 buttonim.on_clicked(fo.FileOpen)
-#ファイルのimport
 
 #リセットボタンの設置
 resetax = plt.axes([0.05, 0.6,  0.1, 0.04])
