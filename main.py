@@ -5,9 +5,9 @@ from matplotlib.widgets import Slider, Button
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog as fd
 import FileOpen as fo
-import FileExport as fe
 import tkinter as tk
 import os
+import datetime
 
 mpl.use('tkAgg')
 
@@ -107,12 +107,42 @@ sli_omega.on_changed(update)
 sli_gamma.on_changed(update)
 sli_alpha.on_changed(update)
 
+
+dt_now = datetime.datetime.now()
+basename = str(dt_now) + '_test' #ファイルをインポートしていない場合にはtestとして出力
+dirname = r'C:\\Users\UedaKosuke\Documents\UEDA'
+
+def createExportWindow():
+    f_type = [('Text', '*.txt'),('csv', '*.csv')]
+    filename = fd.asksaveasfilename(defaultextension='txt', filetypes=f_type, initialdir=dirname, initialfile = basename, title = 'Export As ...')
+    if filename:
+        with open(filename, mode='w',encoding='utf-8') as f:
+            root, ext = os.path.splitext(filename)
+            print(ext)
+            for pair in zip(t,Em3):
+                print(*pair, file=f)
+
+        if ext == '.txt':
+            with open(filename, encoding='utf-8') as f:
+                data_lines = f.read()
+                datalines=data_lines.replace(' ','\t')
+
+        else:
+            with open(filename, encoding='utf-8') as f:
+                data_lines = f.read()
+                datalines=data_lines.replace(' ',',')
+        with open(filename, mode='w', encoding='utf-8') as f:
+            print(datalines, file=f)
+
+
+def WriteFile(event):
+    createExportWindow()
+
 #エクスポートボタンの設置
 exportax = plt.axes([0.05, 0.7, 0.1, 0.04])
 buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 
-buttonex.on_clicked(fe.WriteFile)
-
+buttonex.on_clicked(WriteFile)
 
 root = tk.Tk()
 root.geometry('700x600')
@@ -165,7 +195,22 @@ btn.place(x=602, y=550)
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
 buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
 
-buttonim.on_clicked(fo.FileOpen)
+
+
+def FileOpen(event):
+	data_store = fo.openFile()
+	data_axis = data_store[0]
+	data_value = data_store[1]
+	filenamelabel = tk.Label(root, text=data_store[2])
+	filenamelabel.place(x=1, y=1)
+	global dirname
+	dirname = os.path.dirname(data_store[2])
+	global basename
+	basename = data_store[3] + '_fitting'
+	dt.set_data(data_axis,data_value)
+
+buttonim.on_clicked(FileOpen)
+
 
 #リセットボタンの設置
 resetax = plt.axes([0.05, 0.6,  0.1, 0.04])
@@ -177,7 +222,6 @@ def reset(event):
 	sli_gamma.reset()
 	sli_alpha.reset()
 
-#button.on_clicked(TR.timeres)
 
 def _destroyWindow():
     root.quit()
