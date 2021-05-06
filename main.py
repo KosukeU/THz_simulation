@@ -118,7 +118,7 @@ root = tk.Tk()
 root.geometry('700x600')
 
 flag1 = 0
-'''
+
 def AppChange():
     timres_value = timres.get()
     global tm
@@ -156,7 +156,7 @@ def timeres():
         appbtn.place_forget()
         root.geometry('700x600')
         flag1 = 0
-'''
+
 btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
 btn.place(x=602, y=550)
 
@@ -177,7 +177,7 @@ def reset(event):
 	sli_gamma.reset()
 	sli_alpha.reset()
 
-button.on_clicked(timeres)
+#button.on_clicked(TR.timeres)
 
 def _destroyWindow():
     root.quit()

@@ -14,8 +14,8 @@ def AppChange():
     global Em3
     Em3 = Em2
     l.set_ydata(Em2)
-    fig.canvas.draw_idle()
 
+'''
 def timeres():
     global flag1, timres, tmlabel, appbtn
     if flag1 == 0:
@@ -35,3 +35,4 @@ def timeres():
         appbtn.place_forget()
         root.geometry('700x600')
         flag1 = 0
+'''
