@@ -6,6 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog as fd
 import FileOpen as fo
 import tkinter as tk
+from tkinter import ttk
 import os
 import datetime
 
@@ -145,7 +146,20 @@ buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 buttonex.on_clicked(WriteFile)
 
 root = tk.Tk()
-root.geometry('700x600')
+root.geometry('700x700')
+root.title(u'Terahertz Fitting')
+
+#tk_sliderの設置
+val = tk.DoubleVar()
+sc = tk.Scale(root,
+    variable=val,
+    orient=tk.HORIZONTAL,
+    length=200,
+    from_=0,
+    to=2,
+)
+sc.place(x= 100, y=660)
+
 
 flag1 = 0
 
