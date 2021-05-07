@@ -151,15 +151,72 @@ root.title(u'Terahertz Fitting')
 
 #tk_sliderの設置
 val = tk.DoubleVar()
-sc = tk.Scale(root,
+scamp = tk.Scale(root,
     variable=val,
     orient=tk.HORIZONTAL,
-    length=200,
-    from_=0,
-    to=2,
+    length=400,
+    from_= 0,
+	resolution = 0.01,
+    to=0.5,
+	showvalue = 0,
 )
-sc.place(x= 100, y=660)
+scamp.place(x= 150, y=600)
+labelscamp = ttk.Label(
+	root,
+	text = "Amplitude"
+)
+labelscamp.place(x=30,y=600)
 
+val = tk.DoubleVar()
+scblo = tk.Scale(root,
+    variable=val,
+    orient=tk.HORIZONTAL,
+    length=400,
+    from_= 0,
+	resolution = 0.01,
+    to=0.5,
+	showvalue = 0,
+)
+scblo.place(x= 150, y=620)
+labelscblo = ttk.Label(
+	root,
+	text = "BlochFrequency"
+)
+labelscblo.place(x=30,y=620)
+
+val = tk.DoubleVar()
+screl = tk.Scale(root,
+    variable=val,
+    orient=tk.HORIZONTAL,
+    length=400,
+    from_= 0,
+	resolution = 0.01,
+    to=0.5,
+	showvalue = 0,
+)
+screl.place(x= 150, y=640)
+labelscrel = ttk.Label(
+	root,
+	text = "RelaxationTime"
+)
+labelscrel.place(x=30,y=640)
+
+val = tk.DoubleVar()
+scini = tk.Scale(root,
+    variable=val,
+    orient=tk.HORIZONTAL,
+    length=400,
+    from_= 0,
+	resolution = 0.01,
+    to=0.5,
+	showvalue = 0,
+)
+scini.place(x= 150, y=660)
+labelscamp = ttk.Label(
+	root,
+	text = "InitialPhase"
+)
+labelscamp.place(x=30,y=660)
 
 flag1 = 0
 
