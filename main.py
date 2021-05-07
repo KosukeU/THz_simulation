@@ -150,15 +150,35 @@ root.geometry('700x700')
 root.title(u'Terahertz Fitting')
 
 #tk_sliderの設置
-val = tk.DoubleVar()
+def updatetest(event):
+	sj = valamp.get()
+	somega = valblo.get()
+	sgamma = valrel.get()
+	salpha = valini.get()
+	j02 = sj*10**-19
+	omegaB2 = somega * 2.0 * np.pi* 10 **12
+	gamma2 = 1/(sgamma * 10**-12)
+	alpha2 = salpha
+	Em2 = emission(j02, omegaB2, gamma2, alpha2)
+	global Em3
+	Em3 = Em2
+	l.set_ydata(Em2)
+	fig.canvas.draw_idle()
+	labelvalamp["text"] = valamp.get()
+	labelvalblo["text"] = valblo.get()
+	labelvalrel["text"] = valrel.get()
+	labelvalini["text"] = valini.get()
+
+valamp = tk.DoubleVar(root,value=0.5)
 scamp = tk.Scale(root,
-    variable=val,
+    variable=valamp,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 0,
-	resolution = 0.01,
-    to=0.5,
+    from_= 0.05,
+	resolution = 0.005,
+    to=0.7,
 	showvalue = 0,
+	command = updatetest
 )
 scamp.place(x= 150, y=600)
 labelscamp = ttk.Label(
@@ -166,16 +186,22 @@ labelscamp = ttk.Label(
 	text = "Amplitude"
 )
 labelscamp.place(x=30,y=600)
+labelvalamp = ttk.Label(
+	root,
+	text = valamp.get()
+)
+labelvalamp.place(x=550,y=600)
 
-val = tk.DoubleVar()
+valblo = tk.DoubleVar(root,value=1.9)
 scblo = tk.Scale(root,
-    variable=val,
+    variable=valblo,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 0,
+    from_= 1.0,
 	resolution = 0.01,
-    to=0.5,
+    to=2.0,
 	showvalue = 0,
+	command = updatetest
 )
 scblo.place(x= 150, y=620)
 labelscblo = ttk.Label(
@@ -183,16 +209,22 @@ labelscblo = ttk.Label(
 	text = "BlochFrequency"
 )
 labelscblo.place(x=30,y=620)
+labelvalblo = ttk.Label(
+	root,
+	text = valblo.get()
+)
+labelvalblo.place(x=550,y=620)
 
-val = tk.DoubleVar()
+valrel = tk.DoubleVar(root,value=0.24)
 screl = tk.Scale(root,
-    variable=val,
+    variable=valrel,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 0,
-	resolution = 0.01,
-    to=0.5,
+    from_= 0.01,
+	resolution = 0.005,
+    to=0.7,
 	showvalue = 0,
+	command = updatetest
 )
 screl.place(x= 150, y=640)
 labelscrel = ttk.Label(
@@ -200,23 +232,36 @@ labelscrel = ttk.Label(
 	text = "RelaxationTime"
 )
 labelscrel.place(x=30,y=640)
+labelvalrel = ttk.Label(
+	root,
+	text = valrel.get()
+)
+labelvalrel.place(x=550,y=640)
 
-val = tk.DoubleVar()
+valini = tk.DoubleVar(root,value=0.25)
 scini = tk.Scale(root,
-    variable=val,
+    variable=valini,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 0,
+    from_= -2.0,
 	resolution = 0.01,
-    to=0.5,
+    to=2.0,
 	showvalue = 0,
+	command=updatetest
 )
 scini.place(x= 150, y=660)
-labelscamp = ttk.Label(
+labelscini = ttk.Label(
 	root,
 	text = "InitialPhase"
 )
-labelscamp.place(x=30,y=660)
+labelscini.place(x=30,y=660)
+labelvalini = ttk.Label(
+	root,
+	text = valini.get()
+)
+labelvalini.place(x=550,y=660)
+
+
 
 flag1 = 0
 
