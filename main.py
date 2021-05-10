@@ -75,6 +75,7 @@ plt.grid('x=0')
 l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5)
 dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=1)
 
+'''
 #スライダーの設置
 ax_j = plt.axes([0.25, 0.20, 0.65, 0.03], facecolor='gold')
 ax_omega = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor='gold')
@@ -107,7 +108,7 @@ sli_j.on_changed(update)
 sli_omega.on_changed(update)
 sli_gamma.on_changed(update)
 sli_alpha.on_changed(update)
-
+'''
 
 dt_now = datetime.datetime.now()
 basename = str(dt_now) + '_test' #ファイルをインポートしていない場合にはtestとして出力
@@ -311,22 +312,27 @@ btn.place(x=602, y=550)
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
 buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
 
-
-
-def FileOpen(event):
+filenamelabel = tk.Label(root)
+filenamelabel.place(x=1, y=1)
+def FileOpen():
 	data_store = fo.openFile()
 	data_axis = data_store[0]
 	data_value = data_store[1]
-	filenamelabel = tk.Label(root, text=data_store[2])
-	filenamelabel.place(x=1, y=1)
+	#filenamelabel.pack_forget()
+	#filenamelabel = tk.Label(root, text='data_store[2]')
+	#filenamelabel.place(x=1, y=1)
+	filenamelabel["text"] = data_store[2]
 	global dirname
 	dirname = os.path.dirname(data_store[2])
 	global basename
 	basename = data_store[3] + '_fitting'
 	dt.set_data(data_axis,data_value)
 
-buttonim.on_clicked(FileOpen)
+#buttonim.on_clicked(FileOpen)
 
+#Tkによるimportボタン
+btnim = tk.Button(root, text='import', command = FileOpen, width = 12)
+btnim.place(x = 602, y = 100)
 
 #リセットボタンの設置
 resetax = plt.axes([0.05, 0.6,  0.1, 0.04])
