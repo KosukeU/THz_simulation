@@ -16,8 +16,8 @@ c1,c2,c3 = "blue","green","red"	#色の用意
 l1,l2,l3 = "gaussian","E_tmp","E"	#ラベルの用意
 #fig = plt.figure()
 
-fig, ax = plt.subplots(figsize=(6,6))
-plt.subplots_adjust(left=0.25, bottom=0.35)
+fig, ax = plt.subplots(figsize=(6,5))
+#plt.subplots_adjust(left=0.25, bottom=0.35)
 
 #初期値の設定,可変部を分離して定義
 j = 0.5
@@ -110,6 +110,12 @@ sli_gamma.on_changed(update)
 sli_alpha.on_changed(update)
 '''
 
+
+root = tk.Tk()
+root.geometry('700x700')
+root.title(u'Terahertz Fitting')
+
+
 dt_now = datetime.datetime.now()
 basename = str(dt_now) + '_test' #ファイルをインポートしていない場合にはtestとして出力
 dirname = r'C:\\Users\UedaKosuke\Documents\UEDA'
@@ -141,14 +147,14 @@ def WriteFile(event):
     createExportWindow()
 
 #エクスポートボタンの設置
+'''
 exportax = plt.axes([0.05, 0.7, 0.1, 0.04])
 buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 
 buttonex.on_clicked(WriteFile)
-
-root = tk.Tk()
-root.geometry('700x700')
-root.title(u'Terahertz Fitting')
+'''
+btnex = tk.Button(root, text='export', command = createExportWindow, width = 12)
+btnex.place(x = 602, y = 150)
 
 #tk_sliderの設置
 def updatetest(event):
@@ -294,14 +300,14 @@ def timeres():
     	tmlabel.place(x=650, y=450)
     	appbtn = tk.Button(root, text='Apply', command=AppChange)
     	appbtn.place(x=620, y=500)
-    	root.geometry('700x700')
+    	#root.geometry('700x700')
     	flag1 = -1
 
     else:
         timres.place_forget()
         tmlabel.place_forget()
         appbtn.place_forget()
-        root.geometry('700x600')
+        #root.geometry('700x700')
         flag1 = 0
 
 btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
@@ -309,31 +315,33 @@ btn.place(x=602, y=550)
 
 
 #インポートボタンの設置
-importax = plt.axes([0.05, 0.8, 0.1, 0.04])
-buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
 
-filenamelabel = tk.Label(root)
-filenamelabel.place(x=1, y=1)
+filenamelabel = tk.Label(root, text='No file imported')
+filenamelabel.place(x=50, y=550)
 def FileOpen():
 	data_store = fo.openFile()
 	data_axis = data_store[0]
 	data_value = data_store[1]
-	#filenamelabel.pack_forget()
-	#filenamelabel = tk.Label(root, text='data_store[2]')
-	#filenamelabel.place(x=1, y=1)
-	filenamelabel["text"] = data_store[2]
+	global filenamelabel
+	filenamelabel["text"] = 'plotted data place : ' + data_store[2]
 	global dirname
 	dirname = os.path.dirname(data_store[2])
 	global basename
 	basename = data_store[3] + '_fitting'
 	dt.set_data(data_axis,data_value)
 
-#buttonim.on_clicked(FileOpen)
+'''
+#matplotlibによるimportボタン(有効にするにはFileOpenの引数をeventに変更)
+importax = plt.axes([0.05, 0.8, 0.1, 0.04])
+buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
+buttonim.on_clicked(FileOpen)
+'''
 
 #Tkによるimportボタン
 btnim = tk.Button(root, text='import', command = FileOpen, width = 12)
 btnim.place(x = 602, y = 100)
 
+'''
 #リセットボタンの設置
 resetax = plt.axes([0.05, 0.6,  0.1, 0.04])
 button = Button(resetax, 'Reset', color='gold', hovercolor='0.975')
@@ -343,7 +351,7 @@ def reset(event):
 	sli_omega.reset()
 	sli_gamma.reset()
 	sli_alpha.reset()
-
+'''
 
 def _destroyWindow():
     root.quit()
