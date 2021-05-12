@@ -276,10 +276,10 @@ def AppChange():
     timres_value = timres.get()
     global tm
     tm = float(timres_value)
-    sj = sli_j.val
-    somega = sli_omega.val
-    sgamma = sli_gamma.val
-    salpha = sli_alpha.val
+    sj = valamp.get()
+    somega = valblo.get()
+    sgamma = valrel.get()
+    salpha = valini.get()
     j02 = sj*10**-19
     omegaB2 = somega * 2.0 * np.pi* 10 **12
     gamma2 = 1/(sgamma * 10**-12)
