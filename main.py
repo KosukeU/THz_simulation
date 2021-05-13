@@ -156,8 +156,7 @@ buttonex.on_clicked(WriteFile)
 btnex = tk.Button(root, text='export', command = createExportWindow, width = 12)
 btnex.place(x = 602, y = 150)
 
-#tk_sliderの設置
-def updatetest(event):
+def updatewaveform():
 	sj = valamp.get()
 	somega = valblo.get()
 	sgamma = valrel.get()
@@ -171,6 +170,25 @@ def updatetest(event):
 	Em3 = Em2
 	l.set_ydata(Em2)
 	fig.canvas.draw_idle()
+
+#tk_sliderの設置
+def updatetest(event):
+	updatewaveform()
+	'''
+	sj = valamp.get()
+	somega = valblo.get()
+	sgamma = valrel.get()
+	salpha = valini.get()
+	j02 = sj*10**-19
+	omegaB2 = somega * 2.0 * np.pi* 10 **12
+	gamma2 = 1/(sgamma * 10**-12)
+	alpha2 = salpha
+	Em2 = emission(j02, omegaB2, gamma2, alpha2)
+	global Em3
+	Em3 = Em2
+	l.set_ydata(Em2)
+	fig.canvas.draw_idle()
+	'''
 	labelvalamp["text"] = valamp.get()
 	labelvalblo["text"] = valblo.get()
 	labelvalrel["text"] = valrel.get()
@@ -276,6 +294,8 @@ def AppChange():
     timres_value = timres.get()
     global tm
     tm = float(timres_value)
+	updatewaveform()
+	'''
     sj = valamp.get()
     somega = valblo.get()
     sgamma = valrel.get()
@@ -289,6 +309,7 @@ def AppChange():
     Em3 = Em2
     l.set_ydata(Em2)
     fig.canvas.draw_idle()
+	'''
 
 def timeres():
     global flag1, timres, tmlabel, appbtn
@@ -329,6 +350,7 @@ def FileOpen():
 	global basename
 	basename = data_store[3] + '_fitting'
 	dt.set_data(data_axis,data_value)
+	fig.canvas.draw_idle()
 
 '''
 #matplotlibによるimportボタン(有効にするにはFileOpenの引数をeventに変更)
