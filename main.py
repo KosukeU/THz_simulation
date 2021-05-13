@@ -294,8 +294,8 @@ def AppChange():
     timres_value = timres.get()
     global tm
     tm = float(timres_value)
-	updatewaveform()
-	'''
+    updatewaveform()
+    '''
     sj = valamp.get()
     somega = valblo.get()
     sgamma = valrel.get()
@@ -309,7 +309,7 @@ def AppChange():
     Em3 = Em2
     l.set_ydata(Em2)
     fig.canvas.draw_idle()
-	'''
+    '''
 
 def timeres():
     global flag1, timres, tmlabel, appbtn
