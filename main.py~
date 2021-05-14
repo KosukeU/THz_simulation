@@ -332,7 +332,7 @@ def timeres():
         flag1 = 0
 
 btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
-btn.place(x=602, y=470)
+btn.place(x=602, y=500)
 
 
 #インポートボタンの設置
