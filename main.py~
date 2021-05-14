@@ -189,10 +189,10 @@ def updatetest(event):
 	l.set_ydata(Em2)
 	fig.canvas.draw_idle()
 	'''
-	labelvalamp["text"] = valamp.get()
-	labelvalblo["text"] = valblo.get()
-	labelvalrel["text"] = valrel.get()
-	labelvalini["text"] = valini.get()
+	labelvalamp["text"] = str(valamp.get())
+        labelvalblo["text"] = str('{:.2f}'.format(valblo.get())) + ' (THz)'
+	labelvalrel["text"] = str(valrel.get()) + ' (ps)'
+	labelvalini["text"] = str(valini.get()) + ' (rad)'
 
 valamp = tk.DoubleVar(root,value=0.5)
 scamp = tk.Scale(root,
@@ -236,7 +236,7 @@ labelscblo = ttk.Label(
 labelscblo.place(x=30,y=620)
 labelvalblo = ttk.Label(
 	root,
-	text = valblo.get()
+        text = str('{:.2f}'.format(valblo.get())) + ' (THz)'
 )
 labelvalblo.place(x=550,y=620)
 
@@ -259,7 +259,7 @@ labelscrel = ttk.Label(
 labelscrel.place(x=30,y=640)
 labelvalrel = ttk.Label(
 	root,
-	text = valrel.get()
+	text = str(valrel.get())+' (ps)'
 )
 labelvalrel.place(x=550,y=640)
 
@@ -282,7 +282,7 @@ labelscini = ttk.Label(
 labelscini.place(x=30,y=660)
 labelvalini = ttk.Label(
 	root,
-	text = valini.get()
+	text = str(valini.get()) + ' (rad)'
 )
 labelvalini.place(x=550,y=660)
 
@@ -332,7 +332,7 @@ def timeres():
         flag1 = 0
 
 btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
-btn.place(x=602, y=500)
+btn.place(x=602, y=470)
 
 
 #インポートボタンの設置

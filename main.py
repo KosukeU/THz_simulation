@@ -189,10 +189,10 @@ def updatetest(event):
 	l.set_ydata(Em2)
 	fig.canvas.draw_idle()
 	'''
-	labelvalamp["text"] = valamp.get()
-	labelvalblo["text"] = valblo.get()
-	labelvalrel["text"] = valrel.get()
-	labelvalini["text"] = valini.get()
+	labelvalamp["text"] = str('{:.2f}'.format(valamp.get()))
+	labelvalblo["text"] = str('{:.2f}'.format(valblo.get())) + ' (THz)'
+	labelvalrel["text"] = str('{:.2f}'.format(valrel.get())) + ' (ps)'
+	labelvalini["text"] = str('{:.2f}'.format(valini.get())) + ' (rad)'
 
 valamp = tk.DoubleVar(root,value=0.5)
 scamp = tk.Scale(root,
@@ -213,7 +213,7 @@ labelscamp = ttk.Label(
 labelscamp.place(x=30,y=600)
 labelvalamp = ttk.Label(
 	root,
-	text = valamp.get()
+	text = '{:.2f}'.format(valamp.get())
 )
 labelvalamp.place(x=550,y=600)
 
@@ -236,7 +236,7 @@ labelscblo = ttk.Label(
 labelscblo.place(x=30,y=620)
 labelvalblo = ttk.Label(
 	root,
-	text = valblo.get()
+        text = str('{:.2f}'.format(valblo.get())) + ' (THz)'
 )
 labelvalblo.place(x=550,y=620)
 
@@ -259,7 +259,7 @@ labelscrel = ttk.Label(
 labelscrel.place(x=30,y=640)
 labelvalrel = ttk.Label(
 	root,
-	text = valrel.get()
+	text = str('{:.2f}'.format(valrel.get())) +' (ps)'
 )
 labelvalrel.place(x=550,y=640)
 
@@ -282,7 +282,7 @@ labelscini = ttk.Label(
 labelscini.place(x=30,y=660)
 labelvalini = ttk.Label(
 	root,
-	text = valini.get()
+	text = str('{:.2f}'.format(valini.get())) + ' (rad)'
 )
 labelvalini.place(x=550,y=660)
 
@@ -320,7 +320,7 @@ def timeres():
     	tmlabel = tk.Label(root, text='(ps)')
     	tmlabel.place(x=650, y=420)
     	appbtn = tk.Button(root, text='Apply', command=AppChange)
-    	appbtn.place(x=620, y=450)
+    	appbtn.place(x=620, y=440)
     	#root.geometry('700x700')
     	flag1 = -1
 
