@@ -288,6 +288,7 @@ labelvalini.place(x=550,y=660)
 
 
 #時間分解能の編集
+'''
 flag1 = 0
 
 def AppChange():
@@ -295,21 +296,6 @@ def AppChange():
     global tm
     tm = float(timres_value)
     updatewaveform()
-    '''
-    sj = valamp.get()
-    somega = valblo.get()
-    sgamma = valrel.get()
-    salpha = valini.get()
-    j02 = sj*10**-19
-    omegaB2 = somega * 2.0 * np.pi* 10 **12
-    gamma2 = 1/(sgamma * 10**-12)
-    alpha2 = salpha
-    Em2 = emission(j02, omegaB2, gamma2, alpha2)
-    global Em3
-    Em3 = Em2
-    l.set_ydata(Em2)
-    fig.canvas.draw_idle()
-   '''
 
 def timeres():
     global flag1, timres, tmlabel, appbtn
@@ -331,8 +317,37 @@ def timeres():
         #root.geometry('700x700')
         flag1 = 0
 
-btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
-btn.place(x=602, y=550)
+btn = tk.Button(self.reswin, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
+btn.place(x=100, y=100)
+'''
+
+class restest():
+	def reswindestroy(self):
+		timres_value = timres.get()
+		global tm
+		tm = float(timres_value)
+		updatewaveform()
+		self.reswin.destroy()
+
+	def reswindow(self):
+		global timres
+		self.reswin = tk.Tk()
+		self.reswin.geometry('150x100')
+		self.reswin.title(u'EditTimeResolution')
+		self.reswin.grab_set()
+		#root.configure(bg='gray')
+		timres = tk.Entry(self.reswin, width=5)
+		timres.insert(0, tm)
+		timres.place(x=30,y=30)
+		tmlabel = tk.Label(self.reswin, text='(ps)')
+		tmlabel.place(x=80, y=30)
+		btnresapp = tk.Button(self.reswin, text='Apply', command = self.reswindestroy, width=10)
+		btnresapp.place(x=30, y=60)
+		self.reswin.mainloop()
+
+resfunc = restest()
+btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
+btnres.place(x=602, y=430)
 
 
 #軸範囲編集ウィンドウ
@@ -342,10 +357,26 @@ class axtest():
 
 	def axisproper(self):
 		self.axwin = tk.Tk()
-		self.axwin.geometry('300x100')
+		self.axwin.geometry('250x120')
 		self.axwin.title(u'axis property')
-		btnclose = tk.Button(self.axwin, text='close', command = self.axprodestroy, width = 20)
-		btnclose.place(x=100, y=50)
+		xfromL = tk.Label(self.axwin, text='x axis  from :')
+		xfromL.place(x=20, y=20)
+		xfromE = tk.Entry(self.axwin, width=5)
+		xfromE.place(x=100, y=20)
+		xtoL = tk.Label(self.axwin, text='to :')
+		xtoL.place(x=158, y=20)
+		xtoE = tk.Entry(self.axwin, width=5)
+		xtoE.place(x=180, y=20)
+		xtoL = tk.Label(self.axwin, text='y axis  from :')
+		xtoL.place(x=20, y=60)
+		yfromE = tk.Entry(self.axwin, width=5)
+		yfromE.place(x=100, y=60)
+		ytoL = tk.Label(self.axwin, text='to :')
+		ytoL.place(x=158, y=60)
+		ytoE = tk.Entry(self.axwin, width=5)
+		ytoE.place(x=180, y=60)
+		btnclose = tk.Button(self.axwin, text='Apply', command = self.axprodestroy, width = 10)
+		btnclose.place(x=70, y=90)
 		self.axwin.mainloop()
 
 axfunc = axtest()
