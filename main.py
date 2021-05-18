@@ -112,7 +112,7 @@ sli_alpha.on_changed(update)
 
 
 root = tk.Tk()
-root.geometry('700x700')
+root.geometry('700x700+100+100')
 root.title(u'Terahertz Fitting')
 
 def disable():#メインウィンドウ操作無効化関数
@@ -259,7 +259,7 @@ labelvalblo = ttk.Label(
 )
 labelvalblo.place(x=550,y=620)
 
-valrel = tk.DoubleVar(root,value=0.24)
+valrel = tk.DoubleVar(root,value=0.26)
 screl = tk.Scale(root,
     variable=valrel,
     orient=tk.HORIZONTAL,
@@ -310,23 +310,22 @@ labelvalini.place(x=550,y=660)
 class restest():
 	def _desreswin(self):
 		self.reswin.quit()
-		#self.reswin.destroy()
+		self.reswin.destroy()
+		active()
 
 	def reswindestroy(self):
 		timres_value = timres.get()
 		global tm
 		tm = float(timres_value)
 		updatewaveform()
-		self.reswin.quit()
-		#self.reswin.destroy()
+		self._desreswin()
 		active()
 
 	def reswindow(self):
 		global timres
 		self.reswin = tk.Toplevel()
-		self.reswin.geometry('150x100')
+		self.reswin.geometry('150x100+100+100')
 		self.reswin.title(u'EditTimeResolution')
-		self.reswin.grab_set()
 		disable()
 		#root.configure(bg='gray')
 		timres = tk.Entry(self.reswin, width=5)
@@ -336,10 +335,8 @@ class restest():
 		tmlabel.place(x=80, y=30)
 		btnresapp = tk.Button(self.reswin, text='Apply', command = self.reswindestroy, width=10)
 		btnresapp.place(x=30, y=60)
-		self.reswin.mainloop()
-
-		self.reswin.withdraw()
 		self.reswin.protocol('WM_DELETE_WINDOW', self._desreswin)
+		self.reswin.mainloop()
 
 resfunc = restest()
 btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
@@ -348,13 +345,19 @@ btnres.place(x=602, y=430)
 
 #軸範囲編集ウィンドウ
 class axtest():
-	def axprodestroy(self):
+	def _desaxwin(self):
+		self.axwin.quit()
 		self.axwin.destroy()
+		active()
+
+	def renewaxis(self):
+		self._desaxwin()
 
 	def axisproper(self):
-		self.axwin = tk.Tk()
-		self.axwin.geometry('250x120')
+		self.axwin = tk.Toplevel()
+		self.axwin.geometry('250x120+400+100')
 		self.axwin.title(u'axis property')
+		disable()
 		xfromL = tk.Label(self.axwin, text='x axis  from :')
 		xfromL.place(x=20, y=20)
 		xfromE = tk.Entry(self.axwin, width=5)
@@ -371,8 +374,10 @@ class axtest():
 		ytoL.place(x=158, y=60)
 		ytoE = tk.Entry(self.axwin, width=5)
 		ytoE.place(x=180, y=60)
-		btnclose = tk.Button(self.axwin, text='Apply', command = self.axprodestroy, width = 10)
+		btnclose = tk.Button(self.axwin, text='Apply', command = self.renewaxis, width = 10)
 		btnclose.place(x=70, y=90)
+		#self.axwin.bind('<Return>', self.renewaxis)
+		self.axwin.protocol('WM_DELETE_WINDOW', self._desaxwin)
 		self.axwin.mainloop()
 
 axfunc = axtest()
