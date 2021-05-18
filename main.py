@@ -115,6 +115,25 @@ root = tk.Tk()
 root.geometry('700x700')
 root.title(u'Terahertz Fitting')
 
+def disable():#メインウィンドウ操作無効化関数
+	scamp.configure(state = "disabled")
+	screl.configure(state = "disabled")
+	scblo.configure(state = "disabled")
+	scini.configure(state = "disabled")
+	btnex.configure(state = "disabled")
+	btnim.configure(state = "disabled")
+	btnax.configure(state = "disabled")
+	btnres.configure(state = "disabled")
+
+def active():
+	scamp.configure(state = "active")
+	screl.configure(state = "active")
+	scblo.configure(state = "active")
+	scini.configure(state = "active")
+	btnex.configure(state = "active")
+	btnim.configure(state = "active")
+	btnax.configure(state = "active")
+	btnres.configure(state = "active")
 
 dt_now = datetime.datetime.now()
 basename = str(dt_now) + '_test' #ファイルをインポートしていない場合にはtestとして出力
@@ -286,52 +305,29 @@ labelvalini = ttk.Label(
 )
 labelvalini.place(x=550,y=660)
 
-flag1 = 0
 
-def AppChange():
-    timres_value = timres.get()
-    global tm
-    tm = float(timres_value)
-    updatewaveform()
-
-def timeres():
-    global flag1, timres, tmlabel, appbtn
-    if flag1 == 0:
-    	timres = tk.Entry(root, width=5)
-    	timres.insert(0, tm)
-    	timres.place(x=620,y=420)
-    	tmlabel = tk.Label(root, text='(ps)')
-    	tmlabel.place(x=650, y=420)
-    	appbtn = tk.Button(root, text='Apply', command=AppChange)
-    	appbtn.place(x=620, y=440)
-
-    	#root.geometry('700x700')
-    	flag1 = -1
-
-    else:
-        timres.place_forget()
-        tmlabel.place_forget()
-        appbtn.place_forget()
-        #root.geometry('700x700')
-        flag1 = 0
-
-btn = tk.Button(self.reswin, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
-btn.place(x=100, y=100)
 
 class restest():
+	def _desreswin(self):
+		self.reswin.quit()
+		#self.reswin.destroy()
+
 	def reswindestroy(self):
 		timres_value = timres.get()
 		global tm
 		tm = float(timres_value)
 		updatewaveform()
-		self.reswin.destroy()
+		self.reswin.quit()
+		#self.reswin.destroy()
+		active()
 
 	def reswindow(self):
 		global timres
-		self.reswin = tk.Tk()
+		self.reswin = tk.Toplevel()
 		self.reswin.geometry('150x100')
 		self.reswin.title(u'EditTimeResolution')
 		self.reswin.grab_set()
+		disable()
 		#root.configure(bg='gray')
 		timres = tk.Entry(self.reswin, width=5)
 		timres.insert(0, tm)
@@ -341,6 +337,9 @@ class restest():
 		btnresapp = tk.Button(self.reswin, text='Apply', command = self.reswindestroy, width=10)
 		btnresapp.place(x=30, y=60)
 		self.reswin.mainloop()
+
+		self.reswin.withdraw()
+		self.reswin.protocol('WM_DELETE_WINDOW', self._desreswin)
 
 resfunc = restest()
 btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
@@ -379,9 +378,6 @@ class axtest():
 axfunc = axtest()
 btnax = tk.Button(root, text='axis property', command = axfunc.axisproper, width = 12)
 btnax.place(x= 602, y = 400)
-
-btn = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=timeres, width = 12)
-btn.place(x=602, y=470)
 
 #インポートボタンの設置
 
@@ -424,8 +420,8 @@ def reset(event):
 '''
 
 def _destroyWindow():
-    root.quit()
-    root.destroy()
+	root.quit()
+	root.destroy()
 
 root.withdraw()
 root.protocol('WM_DELETE_WINDOW', _destroyWindow)
