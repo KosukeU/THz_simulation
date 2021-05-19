@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 import os
 import datetime
+from functools import partial
 
 mpl.use('tkAgg')
 
@@ -65,8 +66,13 @@ t = np.round(np.linspace(-2, 8, 1001),2)
 Em1 = emission(j01, omegaB1, gamma1, alpha1)
 Em3 = Em1
 #軸の設定
-plt.xlim(-2.0,3.0)
-plt.ylim(-3.0*10**-6,3.0*10**-6)
+xfrom = -2.0
+xto = 3.0
+yfrom = -3.0
+yto = 3.0
+
+plt.xlim(xfrom,xto)
+plt.ylim(yfrom*10**-6,yto*10**-6)
 plt.xlabel('Time (ps)')
 plt.ylabel('Amplitude (a.u.)')
 
@@ -350,32 +356,62 @@ class axtest():
 		self.axwin.destroy()
 		active()
 
-	def renewaxis(self):
+	def renewaxis(self, xf, xt, yf, yt):#軸の更新ウィンドウ
+		global xfrom, xto, yfrom, yto
+		#axis=self.axisproper.returnaxis()
+		xfrom = float(xf)
+		xto = float(xt)
+		yfrom = float(yf)
+		yto = float(yt)
+		plt.xlim(xfrom,xto)
+		plt.ylim(yfrom*10**-6,yto*10**-6)
+		updatewaveform()
+		#print(float(xfromE))
 		self._desaxwin()
 
+	def axget(self):
+		xf = xfromE.get()
+		xt = xtoE.get()
+		yf = yfromE.get()
+		yt = ytoE.get()
+		self.renewaxis(xf, xt, yf, yt)
+
 	def axisproper(self):
+		global xfromE, xtoE, yfromE, ytoE
 		self.axwin = tk.Toplevel()
-		self.axwin.geometry('250x120+400+100')
+		self.axwin.geometry('280x120+400+100')
 		self.axwin.title(u'axis property')
 		disable()
 		xfromL = tk.Label(self.axwin, text='x axis  from :')
 		xfromL.place(x=20, y=20)
+		xfuni = tk.Label(self.axwin, text='e-6')
+		xfuni.place(x=124, y=20)
 		xfromE = tk.Entry(self.axwin, width=5)
-		xfromE.place(x=100, y=20)
+		xfromE.insert(0, xfrom)
+		xfromE.place(x=90, y=20)
 		xtoL = tk.Label(self.axwin, text='to :')
-		xtoL.place(x=158, y=20)
+		xtoL.place(x=168, y=20)
+		xtuni = tk.Label(self.axwin, text='e-6')
+		xtuni.place(x=224, y=20)
 		xtoE = tk.Entry(self.axwin, width=5)
-		xtoE.place(x=180, y=20)
-		xtoL = tk.Label(self.axwin, text='y axis  from :')
-		xtoL.place(x=20, y=60)
+		xtoE.insert(0, xto)
+		xtoE.place(x=190, y=20)
+		yfromL = tk.Label(self.axwin, text='y axis  from :')
+		yfromL.place(x=20, y=60)
+		yfuni = tk.Label(self.axwin, text='(ps)')
+		yfuni.place(x=124, y=60)
 		yfromE = tk.Entry(self.axwin, width=5)
-		yfromE.place(x=100, y=60)
+		yfromE.insert(0, yfrom)
+		yfromE.place(x=90, y=60)
 		ytoL = tk.Label(self.axwin, text='to :')
-		ytoL.place(x=158, y=60)
+		ytoL.place(x=168, y=60)
+		ytuni = tk.Label(self.axwin, text='(ps)')
+		ytuni.place(x=224, y=60)
 		ytoE = tk.Entry(self.axwin, width=5)
-		ytoE.place(x=180, y=60)
-		btnclose = tk.Button(self.axwin, text='Apply', command = self.renewaxis, width = 10)
-		btnclose.place(x=70, y=90)
+		ytoE.insert(0, yto)
+		ytoE.place(x=190, y=60)
+		btnclose = tk.Button(self.axwin, text='Apply', command = self.axget, width = 10)
+		btnclose.place(x=100, y=90)
 		#self.axwin.bind('<Return>', self.renewaxis)
 		self.axwin.protocol('WM_DELETE_WINDOW', self._desaxwin)
 		self.axwin.mainloop()
