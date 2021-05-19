@@ -376,6 +376,13 @@ class axtest():
 		yt = ytoE.get()
 		self.renewaxis(xf, xt, yf, yt)
 
+	def axreset(self):
+		xf = -2.0
+		xt = 3.0
+		yf = -3.0
+		yt = 3.0
+		self.renewaxis(xf, xt, yf, yt)
+
 	def axisproper(self):
 		global xfromE, xtoE, yfromE, ytoE
 		self.axwin = tk.Toplevel()
@@ -411,7 +418,9 @@ class axtest():
 		ytoE.insert(0, yto)
 		ytoE.place(x=190, y=60)
 		btnclose = tk.Button(self.axwin, text='Apply', command = self.axget, width = 10)
-		btnclose.place(x=100, y=90)
+		btnclose.place(x=150, y=90)
+		btnreset = tk.Button(self.axwin, text='Reset', command = self.axreset, width = 10)
+		btnreset.place(x=50, y=90)
 		#self.axwin.bind('<Return>', self.renewaxis)
 		self.axwin.protocol('WM_DELETE_WINDOW', self._desaxwin)
 		self.axwin.mainloop()
