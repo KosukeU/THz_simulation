@@ -125,7 +125,7 @@ def disable():#メインウィンドウ操作無効化関数
 	btnax.configure(state = "disabled")
 	btnres.configure(state = "disabled")
 
-def active():
+def active():#メインウィンドウ操作有効化関数
 	scamp.configure(state = "active")
 	screl.configure(state = "active")
 	scblo.configure(state = "active")
