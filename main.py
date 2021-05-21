@@ -221,6 +221,7 @@ def updatetest(event):
 	labelvalrel["text"] = str('{:.2f}'.format(valrel.get())) + ' (ps)'
 	labelvalini["text"] = str('{:.2f}'.format(valini.get())) + ' (rad)'
 
+
 valamp = tk.DoubleVar(root,value=0.5)
 scamp = tk.Scale(root,
     variable=valamp,
@@ -312,7 +313,6 @@ labelvalini = ttk.Label(
 	text = str('{:.2f}'.format(valini.get())) + ' (rad)'
 )
 labelvalini.place(x=550,y=660)
-
 
 
 class restest():
