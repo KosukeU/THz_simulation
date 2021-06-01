@@ -389,7 +389,7 @@ class axtest():
 		global xfromE, xtoE, yfromE, ytoE
 		self.axwin = tk.Toplevel()
 		self.axwin.geometry('280x120+400+100')
-		self.axwin.title(u'axis property')
+		self.axwin.title(u'Axis Setting')
 		disable()
 		xfromL = tk.Label(self.axwin, text='x axis  from :')
 		xfromL.place(x=20, y=20)
@@ -428,7 +428,7 @@ class axtest():
 		self.axwin.mainloop()
 
 axfunc = axtest()
-btnax = tk.Button(root, text='axis property', command = axfunc.axisproper, width = 12)
+btnax = tk.Button(root, text='Axis Setting', command = axfunc.axisproper, width = 12)
 btnax.place(x= 602, y = 400)
 
 #インポートボタンの設置
