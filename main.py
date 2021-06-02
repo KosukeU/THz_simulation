@@ -10,6 +10,7 @@ import FileOpen as fo
 import tkinter as tk
 from tkinter import ttk
 import os
+import subprocess
 import datetime
 from functools import partial
 
@@ -131,6 +132,7 @@ sli_alpha.on_changed(update)
 root = tk.Tk()
 root.geometry('700x700+100+100')
 root.title(u'Terahertz Fitting')
+root.configure(bg='white')
 
 def disable():#メインウィンドウ操作無効化関数
 	scamp.configure(state = "disabled")
@@ -247,12 +249,14 @@ scamp = tk.Scale(root,
 scamp.place(x= 150, y=600)
 labelscamp = ttk.Label(
 	root,
-	text = "Amplitude"
+	text = "Amplitude",
+	background="#ffffff"
 )
 labelscamp.place(x=30,y=600)
 labelvalamp = ttk.Label(
 	root,
-	text = '{:.2f}'.format(valamp.get())
+	text = '{:.2f}'.format(valamp.get()),
+	background="#ffffff"
 )
 labelvalamp.place(x=550,y=600)
 
@@ -270,12 +274,14 @@ scblo = tk.Scale(root,
 scblo.place(x= 150, y=620)
 labelscblo = ttk.Label(
 	root,
-	text = "BlochFrequency"
+	text = "BlochFrequency",
+	background="#ffffff"
 )
 labelscblo.place(x=30,y=620)
 labelvalblo = ttk.Label(
 	root,
-        text = str('{:.2f}'.format(valblo.get())) + ' (THz)'
+        text = str('{:.2f}'.format(valblo.get())) + ' (THz)',
+		background="#ffffff"
 )
 labelvalblo.place(x=550,y=620)
 
@@ -293,12 +299,14 @@ screl = tk.Scale(root,
 screl.place(x= 150, y=640)
 labelscrel = ttk.Label(
 	root,
-	text = "RelaxationTime"
+	text = "RelaxationTime",
+	background="#ffffff"
 )
 labelscrel.place(x=30,y=640)
 labelvalrel = ttk.Label(
 	root,
-	text = str('{:.2f}'.format(valrel.get())) +' (ps)'
+	text = str('{:.2f}'.format(valrel.get())) +' (ps)',
+	background="#ffffff"
 )
 labelvalrel.place(x=550,y=640)
 
@@ -316,15 +324,19 @@ scini = tk.Scale(root,
 scini.place(x= 150, y=660)
 labelscini = ttk.Label(
 	root,
-	text = "InitialPhase"
+	text = "InitialPhase",
+	background="#ffffff"
 )
 labelscini.place(x=30,y=660)
 labelvalini = ttk.Label(
 	root,
-	text = str('{:.2f}'.format(valini.get())) + ' (rad)'
+	text = str('{:.2f}'.format(valini.get())) + ' (rad)',
+	background="#ffffff"
 )
 labelvalini.place(x=550,y=660)
 
+option = tk.Label(root, text='-Option-', bg='white')
+option.place(x = 620, y = 345)
 
 class restest():
 	def _desreswin(self):
@@ -345,12 +357,13 @@ class restest():
 		self.reswin = tk.Toplevel()
 		self.reswin.geometry('150x100+100+100')
 		self.reswin.title(u'EditTimeResolution')
+		self.reswin.configure(bg='white')
 		disable()
 		#root.configure(bg='gray')
 		timres = tk.Entry(self.reswin, width=5)
 		timres.insert(0, tm)
 		timres.place(x=30,y=30)
-		tmlabel = tk.Label(self.reswin, text='(ps)')
+		tmlabel = tk.Label(self.reswin, text='(ps)', bg='white')
 		tmlabel.place(x=80, y=30)
 		btnresapp = tk.Button(self.reswin, text='Apply', command = self.reswindestroy, width=10)
 		btnresapp.place(x=30, y=60)
@@ -400,8 +413,8 @@ class axtest():
 		xto = float(xt)
 		yfrom = float(yf)
 		yto = float(yt)
-		plt.xlim(xfrom,xto)
-		plt.ylim(yfrom*10**-6,yto*10**-6)
+		ax.set_xlim(xfrom,xto)
+		ax.set_ylim(yfrom*10**-6,yto*10**-6)
 		updatewaveform()
 		#print(float(xfromE))
 		self._desaxwin()
@@ -425,31 +438,32 @@ class axtest():
 		self.axwin = tk.Toplevel()
 		self.axwin.geometry('280x120+400+100')
 		self.axwin.title(u'Axis Setting')
+		self.axwin.configure(bg='white')
 		disable()
-		xfromL = tk.Label(self.axwin, text='x axis  from :')
+		xfromL = tk.Label(self.axwin, text='x axis  from :', bg='white')
 		xfromL.place(x=20, y=20)
-		xfuni = tk.Label(self.axwin, text='e-6')
+		xfuni = tk.Label(self.axwin, text='e-6', bg='white')
 		xfuni.place(x=124, y=20)
 		xfromE = tk.Entry(self.axwin, width=5)
 		xfromE.insert(0, xfrom)
 		xfromE.place(x=90, y=20)
-		xtoL = tk.Label(self.axwin, text='to :')
+		xtoL = tk.Label(self.axwin, text='to :', bg='white')
 		xtoL.place(x=168, y=20)
-		xtuni = tk.Label(self.axwin, text='e-6')
+		xtuni = tk.Label(self.axwin, text='e-6', bg='white')
 		xtuni.place(x=224, y=20)
 		xtoE = tk.Entry(self.axwin, width=5)
 		xtoE.insert(0, xto)
 		xtoE.place(x=190, y=20)
-		yfromL = tk.Label(self.axwin, text='y axis  from :')
+		yfromL = tk.Label(self.axwin, text='y axis  from :', bg='white')
 		yfromL.place(x=20, y=60)
-		yfuni = tk.Label(self.axwin, text='(ps)')
+		yfuni = tk.Label(self.axwin, text='(ps)', bg='white')
 		yfuni.place(x=124, y=60)
 		yfromE = tk.Entry(self.axwin, width=5)
 		yfromE.insert(0, yfrom)
 		yfromE.place(x=90, y=60)
-		ytoL = tk.Label(self.axwin, text='to :')
+		ytoL = tk.Label(self.axwin, text='to :', bg='white')
 		ytoL.place(x=168, y=60)
-		ytuni = tk.Label(self.axwin, text='(ps)')
+		ytuni = tk.Label(self.axwin, text='(ps)', bg='white')
 		ytuni.place(x=224, y=60)
 		ytoE = tk.Entry(self.axwin, width=5)
 		ytoE.insert(0, yto)
@@ -468,7 +482,7 @@ btnax.place(x= 602, y = 370)
 
 #インポートボタンの設置
 
-filenamelabel = tk.Label(root, text='No file imported')
+filenamelabel = tk.Label(root, text='No file imported', bg='white')
 filenamelabel.place(x=50, y=550)
 def FileOpen():
 	data_store = fo.openFile()
@@ -482,6 +496,13 @@ def FileOpen():
 	basename = data_store[3] + '_fitting'
 	dt.set_data(data_axis,data_value)
 	fig.canvas.draw_idle()
+
+#Sma4ショートカット
+def openSma4():
+	subprocess.Popen("start C:\\PROGRA~2\\tsuzuki\\Sma4Win\\sma4win.exe", shell=True)
+
+btnsma4 = tk.Button(root, text='Start Sma4', command = openSma4, width = 12)
+btnsma4.place(x=602 , y=475)
 
 '''
 #matplotlibによるimportボタン(有効にするにはFileOpenの引数をeventに変更)
