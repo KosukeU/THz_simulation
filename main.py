@@ -20,6 +20,7 @@ l1,l2,l3 = "gaussian","E_tmp","E"	#ラベルの用意
 #fig = plt.figure()
 
 fig, ax = plt.subplots(figsize=(6,5))
+figg, ax1 = plt.subplots(figsize=(6,4))
 #plt.subplots_adjust(left=0.25, bottom=0.35)
 
 #初期値の設定,可変部を分離して定義
@@ -33,6 +34,8 @@ j01 = j*10**-19
 omegaB1 = omega0*2.0*np.pi*10**12
 gamma1 = 1/(gamma0*10**-12)
 alpha1 = alpha0
+
+#global J_tmp, E_tmp, gaussian_ld
 
 J_tmp = [0] * 501
 E_tmp = [0] * 501
@@ -62,10 +65,11 @@ def emission(j0, omegaB, gamma, alpha):
 #ax3 = fig.add_subplot(1, 1, 1)
 
 t = np.round(np.linspace(-2, 8, 1001),2)
+tfg = np.round(np.linspace(-2, 8, 501),2)
 
 #ax1.plot(gaussian_ld, color=c1, label=l1)
 #ax2.plot(E_tmp, color=c2, label=l2)
-Em1, E_tmp, gaussian_ld = emission(j01, omegaB1, gamma1, alpha1)
+Em1, E_tmp1, gaussian_ld = emission(j01, omegaB1, gamma1, alpha1)
 Em3 = Em1
 #軸の設定
 xfrom = -2.0
@@ -73,15 +77,20 @@ xto = 3.0
 yfrom = -3.0
 yto = 3.0
 
-plt.xlim(xfrom,xto)
-plt.ylim(yfrom*10**-6,yto*10**-6)
-plt.xlabel('Time (ps)')
-plt.ylabel('Amplitude (a.u.)')
-
-plt.grid('x=0')
+ax.set_xlim(xfrom,xto)
+ax.set_ylim(yfrom*10**-6,yto*10**-6)
+ax.set_xlabel('Time (ps)')
+ax.set_ylabel('Amplitude (a.u.)')
+ax.grid('x=0')
 
 l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5)
 dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=1)
+
+ax1.set_xlim(xfrom,xto)
+ax1.set_xlabel('Time (ps)')
+ax1.set_ylabel('Amplitude (a.u.)')
+ax1.grid('x=0')
+g, = ax1.plot(tfg, gaussian_ld, color=c3, label=l3, linestyle='solid', linewidth = 0.5)
 
 '''
 #スライダーの設置
@@ -361,15 +370,20 @@ class gaussian():
 
 	def _gauwin(self):
 		self.gauwin = tk.Toplevel()
-		self.gauwin.geometry('280x120+400+100')
+		self.gauwin.geometry('600x400+800+300')
 		self.gauwin.title(u'Show Gaussian')
 		disable()
+		g.set_ydata(gaussian_ld)
+		figg.canvas.draw_idle()
 		self.gauwin.protocol('WM_DELETE_WINDOW', self._desgauwin)
+		canvasg = FigureCanvasTkAgg(figg, master=self.gauwin)
+		canvasg.get_tk_widget().grid(row=0, column=0)
+		canvasg.draw()
 		self.gauwin.mainloop()
 
 gau = gaussian()
 btngau = tk.Button(root, text='Show Gaussian', command = gau._gauwin, width = 12)
-btngau.place(x= 602, y = 370)
+btngau.place(x= 602, y = 400)
 
 
 #軸範囲編集ウィンドウ
@@ -450,7 +464,7 @@ class axtest():
 
 axfunc = axtest()
 btnax = tk.Button(root, text='Axis Setting', command = axfunc.axisproper, width = 12)
-btnax.place(x= 602, y = 400)
+btnax.place(x= 602, y = 370)
 
 #インポートボタンの設置
 
@@ -503,6 +517,7 @@ canvas = FigureCanvasTkAgg(fig, master=root)
 canvas.get_tk_widget().grid(row=0, column=0)
 canvas.draw()
 #canvas.get_tk_widget().pack()
+
 
 root.update()
 root.deiconify()
