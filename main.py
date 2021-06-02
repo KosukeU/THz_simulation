@@ -53,7 +53,7 @@ def emission(j0, omegaB, gamma, alpha):
 		gaussian_ld[t + 101] = np.exp(-a * (t * 10**-12 * 10**-2)**2)
 
 	E = np.convolve(E_tmp, gaussian_ld) * j0
-	return E
+	return E, E_tmp, gaussian_ld
 
 
 #グラフの描画
@@ -65,7 +65,7 @@ t = np.round(np.linspace(-2, 8, 1001),2)
 
 #ax1.plot(gaussian_ld, color=c1, label=l1)
 #ax2.plot(E_tmp, color=c2, label=l2)
-Em1 = emission(j01, omegaB1, gamma1, alpha1)
+Em1, E_tmp, gaussian_ld = emission(j01, omegaB1, gamma1, alpha1)
 Em3 = Em1
 #軸の設定
 xfrom = -2.0
@@ -132,6 +132,7 @@ def disable():#メインウィンドウ操作無効化関数
 	btnim.configure(state = "disabled")
 	btnax.configure(state = "disabled")
 	btnres.configure(state = "disabled")
+	btngau.configure(state = "disabled")
 
 def active():#メインウィンドウ操作有効化関数
 	scamp.configure(state = "active")
@@ -142,6 +143,7 @@ def active():#メインウィンドウ操作有効化関数
 	btnim.configure(state = "active")
 	btnax.configure(state = "active")
 	btnres.configure(state = "active")
+	btngau.configure(state = "active")
 
 dt_now = datetime.datetime.now()
 basename = str(dt_now) + '_test' #ファイルをインポートしていない場合にはtestとして出力
@@ -192,7 +194,7 @@ def updatewaveform():
 	omegaB2 = somega * 2.0 * np.pi* 10 **12
 	gamma2 = 1/(sgamma * 10**-12)
 	alpha2 = salpha
-	Em2 = emission(j02, omegaB2, gamma2, alpha2)
+	Em2, E_tmp, gaussian_ld = emission(j02, omegaB2, gamma2, alpha2)
 	global Em3
 	Em3 = Em2
 	l.set_ydata(Em2)
@@ -349,6 +351,25 @@ class restest():
 resfunc = restest()
 btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
 btnres.place(x=602, y=430)
+
+#gaussianの表示
+class gaussian():
+	def _desgauwin(self):
+		self.gauwin.quit()
+		self.gauwin.destroy()
+		active()
+
+	def _gauwin(self):
+		self.gauwin = tk.Toplevel()
+		self.gauwin.geometry('280x120+400+100')
+		self.gauwin.title(u'Show Gaussian')
+		disable()
+		self.gauwin.protocol('WM_DELETE_WINDOW', self._desgauwin)
+		self.gauwin.mainloop()
+
+gau = gaussian()
+btngau = tk.Button(root, text='Show Gaussian', command = gau._gauwin, width = 12)
+btngau.place(x= 602, y = 370)
 
 
 #軸範囲編集ウィンドウ
