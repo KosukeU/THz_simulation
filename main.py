@@ -483,13 +483,13 @@ btnax.place(x= 602, y = 220)
 #インポートボタンの設置
 
 filenamelabel = tk.Label(root, text='No file imported', bg='white')
-filenamelabel.place(x=50, y=550)
+filenamelabel.place(x=20, y=550)
 def FileOpen():
 	data_store = fo.openFile()
 	data_axis = data_store[0]
 	data_value = data_store[1]
 	global filenamelabel
-	filenamelabel["text"] = 'plotted data place : ' + data_store[2]
+	filenamelabel["text"] = 'Data Place : ' + data_store[2]
 	global dirname
 	dirname = os.path.dirname(data_store[2])
 	global basename
