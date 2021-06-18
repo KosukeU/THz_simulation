@@ -267,7 +267,7 @@ scblo = tk.Scale(root,
     length=400,
     from_= 1.0,
 	resolution = 0.01,
-    to=2.0,
+    to=2.5,
 	showvalue = 0,
 	command = updatetest
 )
