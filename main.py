@@ -242,7 +242,7 @@ scamp = tk.Scale(root,
     length=400,
     from_= 0.05,
 	resolution = 0.005,
-    to=0.7,
+    to=1.3,
 	showvalue = 0,
 	command = updatetest
 )
