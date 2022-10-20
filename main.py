@@ -20,7 +20,7 @@ c1,c2,c3 = "blue","green","red"	#色の用意
 l1,l2,l3 = "gaussian","E_tmp","E"	#ラベルの用意
 #fig = plt.figure()
 
-fig, ax = plt.subplots(figsize=(6,5))
+fig, ax = plt.subplots(dpi=81, figsize=(6,5))
 figg, ax1 = plt.subplots(figsize=(6,4))
 #plt.subplots_adjust(left=0.25, bottom=0.35)
 
