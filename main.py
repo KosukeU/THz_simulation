@@ -229,13 +229,13 @@ def updatetest(event):
 	l.set_ydata(Em2)
 	fig.canvas.draw_idle()
 	'''
-	labelvalamp["text"] = str('{:.2f}'.format(valamp.get()))
-	labelvalblo["text"] = str('{:.2f}'.format(valblo.get())) + ' (THz)'
-	labelvalrel["text"] = str('{:.2f}'.format(valrel.get())) + ' (ps)'
-	labelvalini["text"] = str('{:.2f}'.format(valini.get())) + ' (rad)'
+	labelvalamp["text"] = str('{:.3f}'.format(valamp.get()))
+	labelvalblo["text"] = str('{:.3f}'.format(valblo.get())) + ' (THz)'
+	labelvalrel["text"] = str('{:.3f}'.format(valrel.get())) + ' (ps)'
+	labelvalini["text"] = str('{:.3f}'.format(valini.get())) + ' (rad)'
 
 
-valamp = tk.DoubleVar(root,value=0.5)
+valamp = tk.DoubleVar(root,value=0.5) #振幅
 scamp = tk.Scale(root,
     variable=valamp,
     orient=tk.HORIZONTAL,
@@ -255,19 +255,19 @@ labelscamp = ttk.Label(
 labelscamp.place(x=30,y=600)
 labelvalamp = ttk.Label(
 	root,
-	text = '{:.2f}'.format(valamp.get()),
+	text = '{:.3f}'.format(valamp.get()),
 	background="#ffffff"
 )
 labelvalamp.place(x=550,y=600)
 
-valblo = tk.DoubleVar(root,value=1.9)
+valblo = tk.DoubleVar(root,value=1.9) #ブロッホ周波数
 scblo = tk.Scale(root,
     variable=valblo,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 1.0,
+    from_= 1.5,
 	resolution = 0.01,
-    to=2.5,
+    to=3.5,
 	showvalue = 0,
 	command = updatetest
 )
@@ -280,12 +280,12 @@ labelscblo = ttk.Label(
 labelscblo.place(x=30,y=620)
 labelvalblo = ttk.Label(
 	root,
-        text = str('{:.2f}'.format(valblo.get())) + ' (THz)',
+        text = str('{:.3f}'.format(valblo.get())) + ' (THz)',
 		background="#ffffff"
 )
 labelvalblo.place(x=550,y=620)
 
-valrel = tk.DoubleVar(root,value=0.26)
+valrel = tk.DoubleVar(root,value=0.26) #減衰時間
 screl = tk.Scale(root,
     variable=valrel,
     orient=tk.HORIZONTAL,
@@ -305,12 +305,12 @@ labelscrel = ttk.Label(
 labelscrel.place(x=30,y=640)
 labelvalrel = ttk.Label(
 	root,
-	text = str('{:.2f}'.format(valrel.get())) +' (ps)',
+	text = str('{:.3f}'.format(valrel.get())) +' (ps)',
 	background="#ffffff"
 )
 labelvalrel.place(x=550,y=640)
 
-valini = tk.DoubleVar(root,value=0.25)
+valini = tk.DoubleVar(root,value=0.25) #初期位相
 scini = tk.Scale(root,
     variable=valini,
     orient=tk.HORIZONTAL,
@@ -330,7 +330,7 @@ labelscini = ttk.Label(
 labelscini.place(x=30,y=660)
 labelvalini = ttk.Label(
 	root,
-	text = str('{:.2f}'.format(valini.get())) + ' (rad)',
+	text = str('{:.3f}'.format(valini.get())) + ' (rad)',
 	background="#ffffff"
 )
 labelvalini.place(x=550,y=660)
@@ -482,7 +482,7 @@ btnax.place(x= 602, y = 220)
 
 #インポートボタンの設置
 
-filenamelabel = tk.Label(root, text='No file imported', bg='white')
+filenamelabel = tk.Label(root, text='No  data files', bg='white')
 filenamelabel.place(x=20, y=550)
 def FileOpen():
 	data_store = fo.openFile()
