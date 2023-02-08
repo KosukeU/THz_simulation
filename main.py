@@ -96,40 +96,6 @@ ax1.set_ylabel('Amplitude (a.u.)')
 ax1.grid('x=0')
 g, = ax1.plot(tfg, gaussian_ld, color=c3, label=l3, linestyle='solid', linewidth = 0.5)
 
-'''
-#スライダーの設置
-ax_j = plt.axes([0.25, 0.20, 0.65, 0.03], facecolor='gold')
-ax_omega = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor='gold')
-ax_gamma = plt.axes([0.25, 0.10, 0.65, 0.03], facecolor='gold')
-ax_alpha = plt.axes([0.25, 0.05, 0.65, 0.03], facecolor='gold')
-
-#スライダーの調整
-sli_j = Slider(ax_j, 'Amplitude', 0.05, 0.7, valinit=j, valstep=0.005)
-sli_omega = Slider(ax_omega, 'BlochFrequency', 1, 2, valinit=omega0, valstep=0.01)
-sli_gamma = Slider(ax_gamma, 'RelaxationTime', 0.01, 0.7, valinit=gamma0, valstep=0.005)
-sli_alpha = Slider(ax_alpha, 'InitialPhase', -2, 2, valinit=alpha0, valstep=0.01)
-
-#スライダーの有効化
-def update(val):
-	sj = sli_j.val
-	somega = sli_omega.val
-	sgamma = sli_gamma.val
-	salpha = sli_alpha.val
-	j02 = sj*10**-19
-	omegaB2 = somega * 2.0 * np.pi* 10 **12
-	gamma2 = 1/(sgamma * 10**-12)
-	alpha2 = salpha
-	Em2 = emission(j02, omegaB2, gamma2, alpha2)
-	global Em3
-	Em3 = Em2
-	l.set_ydata(Em2)
-	fig.canvas.draw_idle()
-
-sli_j.on_changed(update)
-sli_omega.on_changed(update)
-sli_gamma.on_changed(update)
-sli_alpha.on_changed(update)
-'''
 
 root = tk.Tk()
 root.geometry('850x750+100+100')
@@ -189,12 +155,6 @@ def WriteFile(event):
     createExportWindow()
 
 #エクスポートボタンの設置
-'''
-exportax = plt.axes([0.05, 0.7, 0.1, 0.04])
-buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
-
-buttonex.on_clicked(WriteFile)
-'''
 btnex = tk.Button(root, text='export', command = createExportWindow, width = 12)
 btnex.place(x = 700, y = 90)
 
@@ -216,21 +176,6 @@ def updatewaveform():
 #tk_sliderの設置
 def updatetest(event):
 	updatewaveform()
-	'''
-	sj = valamp.get()
-	somega = valblo.get()
-	sgamma = valrel.get()
-	salpha = valini.get()
-	j02 = sj*10**-19
-	omegaB2 = somega * 2.0 * np.pi* 10 **12
-	gamma2 = 1/(sgamma * 10**-12)
-	alpha2 = salpha
-	Em2 = emission(j02, omegaB2, gamma2, alpha2)
-	global Em3
-	Em3 = Em2
-	l.set_ydata(Em2)
-	fig.canvas.draw_idle()
-	'''
 	labelvalamp["text"] = str('{:.3f}'.format(valamp.get()))
 	labelvalblo["text"] = str('{:.3f}'.format(valblo.get())) + ' (THz)'
 	labelvalrel["text"] = str('{:.3f}'.format(valrel.get())) + ' (ps)'
@@ -293,7 +238,7 @@ screl = tk.Scale(root,
     orient=tk.HORIZONTAL,
     length=400,
     from_= 0.01,
-	resolution = 0.0001,
+	resolution = 0.001,
     to=3.0,
 	showvalue = 0,
 	command = updatetest
@@ -516,28 +461,11 @@ def opengnuplot():
 
 btnsma4 = tk.Button(root, text='Start Gnuplot', command = opengnuplot, width = 12)
 btnsma4.place(x=700 , y=430)
-'''
-#matplotlibによるimportボタン(有効にするにはFileOpenの引数をeventに変更)
-importax = plt.axes([0.05, 0.8, 0.1, 0.04])
-buttonim = Button(importax, 'import', color='gold', hovercolor='0.975')
-buttonim.on_clicked(FileOpen)
 
-'''
 #Tkによるimportボタン
 btnim = tk.Button(root, text='import', command = FileOpen, width = 12)
 btnim.place(x = 700, y = 50)
-'''
 
-#リセットボタンの設置
-resetax = plt.axes([0.05, 0.6,  0.1, 0.04])
-button = Button(resetax, 'Reset', color='gold', hovercolor='0.975')
-
-def reset(event):
-	sli_j.reset()
-	sli_omega.reset()
-	sli_gamma.reset()
-	sli_alpha.reset()
-'''
 
 def _destroyWindow():
 	root.quit()
