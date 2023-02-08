@@ -25,10 +25,10 @@ figg, ax1 = plt.subplots(figsize=(6,4))
 #plt.subplots_adjust(left=0.25, bottom=0.35)
 
 #初期値の設定,可変部を分離して定義
-j = 0.5
+j = 0.1
 omega0 = 1.9
 gamma0 = 0.26
-alpha0 = 0.25
+alpha0 = 0.0
 tm = 0.28
 
 j01 = j*10**-19
@@ -38,25 +38,25 @@ alpha1 = alpha0
 
 #global J_tmp, E_tmp, gaussian_ld
 
-J_tmp = [0] * 501
-E_tmp = [0] * 501
-gaussian_ld = [0] * 501		#zero埋めした配列の準備
+J_tmp = [0] * 5001
+E_tmp = [0] * 5001
+gaussian_ld = [0] * 5001		#zero埋めした配列の準備
 
 def emission(j0, omegaB, gamma, alpha):
-	for t in range(-100, 400):
+	for t in range(-1000, 4000):
 			if t == 0:
-					E_tmp[t + 101] = np.cos(alpha) * 10**12 *10**2
+					E_tmp[t + 1001] = (np.cos(alpha) * 10**12 *10**3 + -gamma*np.exp(-gamma * t * 10**-12 * 10**-3) * np.cos(omegaB * t * 10**-12 * 10**-3 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-3) * np.sin(omegaB * t * 10**-12 * 10**-3 + alpha))*j0
 			elif t>0:
-					E_tmp[t + 101] = -gamma*np.exp(-gamma * t * 10**-12 * 10**-2) * np.cos(omegaB * t * 10**-12 * 10**-2 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-2) * np.sin(omegaB * t * 10**-12 * 10**-2 + alpha)
+					E_tmp[t + 1001] = (-gamma*np.exp(-gamma * t * 10**-12 * 10**-3) * np.cos(omegaB * t * 10**-12 * 10**-3 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-3) * np.sin(omegaB * t * 10**-12 * 10**-3 + alpha))*j0
 			else:
 					pass
 
 	a = np.log(2) * 4/(tm*10**-12)**2
 
-	for t in range(-100, 400):
-		gaussian_ld[t + 101] = np.exp(-a * (t * 10**-12 * 10**-2)**2)
+	for t in range(-1000, 4000):
+		gaussian_ld[t + 1001] = np.exp(-a * (t * 10**-12 * 10**-3)**2)
 
-	E = np.convolve(E_tmp, gaussian_ld) * j0
+	E = np.convolve(E_tmp, gaussian_ld)# * j0
 	return E, E_tmp, gaussian_ld
 
 
@@ -65,8 +65,8 @@ def emission(j0, omegaB, gamma, alpha):
 #ax2 = fig.add_subplot(3, 1, 2)
 #ax3 = fig.add_subplot(1, 1, 1)
 
-t = np.round(np.linspace(-2, 8, 1001),2)
-tfg = np.round(np.linspace(-2, 8, 501),2)
+t = np.round(np.linspace(-2, 8, 10001),3)
+tfg = np.round(np.linspace(-2, 8, 5001),3)
 
 #ax1.plot(gaussian_ld, color=c1, label=l1)
 #ax2.plot(E_tmp, color=c2, label=l2)
@@ -75,8 +75,8 @@ Em3 = Em1
 #軸の設定
 xfrom = -2.0
 xto = 3.0
-yfrom = -3.0
-yto = 3.0
+yfrom = -10.0
+yto = 10.0
 
 ax.set_xlim(xfrom,xto)
 ax.set_ylim(yfrom*10**-6,yto*10**-6)
@@ -128,9 +128,8 @@ sli_gamma.on_changed(update)
 sli_alpha.on_changed(update)
 '''
 
-
 root = tk.Tk()
-root.geometry('700x700+100+100')
+root.geometry('1200x700+100+100')
 root.title(u'Terahertz Fitting')
 root.configure(bg='white')
 
@@ -194,7 +193,7 @@ buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 buttonex.on_clicked(WriteFile)
 '''
 btnex = tk.Button(root, text='export', command = createExportWindow, width = 12)
-btnex.place(x = 602, y = 90)
+btnex.place(x = 802, y = 90)
 
 def updatewaveform():
 	sj = valamp.get()
@@ -235,55 +234,55 @@ def updatetest(event):
 	labelvalini["text"] = str('{:.3f}'.format(valini.get())) + ' (rad)'
 
 
-valamp = tk.DoubleVar(root,value=0.5) #振幅
+valamp = tk.DoubleVar(root,value=0.1) #振幅
 scamp = tk.Scale(root,
     variable=valamp,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 0.05,
-	resolution = 0.005,
-    to=1.3,
+    from_= 0.005,
+	resolution = 0.0005,
+    to=0.15,
 	showvalue = 0,
 	command = updatetest
 )
-scamp.place(x= 150, y=600)
+scamp.place(x= 150, y=620)
 labelscamp = ttk.Label(
 	root,
 	text = "Amplitude",
 	background="#ffffff"
 )
-labelscamp.place(x=30,y=600)
+labelscamp.place(x=30,y=620)
 labelvalamp = ttk.Label(
 	root,
 	text = '{:.3f}'.format(valamp.get()),
 	background="#ffffff"
 )
-labelvalamp.place(x=550,y=600)
+labelvalamp.place(x=550,y=620)
 
 valblo = tk.DoubleVar(root,value=1.9) #ブロッホ周波数
 scblo = tk.Scale(root,
     variable=valblo,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= 1.5,
+    from_= 0.5,
 	resolution = 0.01,
-    to=3.5,
+    to=4.0,
 	showvalue = 0,
 	command = updatetest
 )
-scblo.place(x= 150, y=620)
+scblo.place(x= 150, y=640)
 labelscblo = ttk.Label(
 	root,
 	text = "BlochFrequency",
 	background="#ffffff"
 )
-labelscblo.place(x=30,y=620)
+labelscblo.place(x=30,y=640)
 labelvalblo = ttk.Label(
 	root,
         text = str('{:.3f}'.format(valblo.get())) + ' (THz)',
 		background="#ffffff"
 )
-labelvalblo.place(x=550,y=620)
+labelvalblo.place(x=550,y=640)
 
 valrel = tk.DoubleVar(root,value=0.26) #減衰時間
 screl = tk.Scale(root,
@@ -292,25 +291,25 @@ screl = tk.Scale(root,
     length=400,
     from_= 0.01,
 	resolution = 0.005,
-    to=0.7,
+    to=3.0,
 	showvalue = 0,
 	command = updatetest
 )
-screl.place(x= 150, y=640)
+screl.place(x= 150, y=660)
 labelscrel = ttk.Label(
 	root,
 	text = "RelaxationTime",
 	background="#ffffff"
 )
-labelscrel.place(x=30,y=640)
+labelscrel.place(x=30,y=660)
 labelvalrel = ttk.Label(
 	root,
 	text = str('{:.3f}'.format(valrel.get())) +' (ps)',
 	background="#ffffff"
 )
-labelvalrel.place(x=550,y=640)
+labelvalrel.place(x=550,y=660)
 
-valini = tk.DoubleVar(root,value=0.25) #初期位相
+valini = tk.DoubleVar(root,value=0.0) #初期位相
 scini = tk.Scale(root,
     variable=valini,
     orient=tk.HORIZONTAL,
@@ -321,19 +320,19 @@ scini = tk.Scale(root,
 	showvalue = 0,
 	command=updatetest
 )
-scini.place(x= 150, y=660)
+scini.place(x= 150, y=680)
 labelscini = ttk.Label(
 	root,
 	text = "InitialPhase",
 	background="#ffffff"
 )
-labelscini.place(x=30,y=660)
+labelscini.place(x=30,y=680)
 labelvalini = ttk.Label(
 	root,
 	text = str('{:.3f}'.format(valini.get())) + ' (rad)',
 	background="#ffffff"
 )
-labelvalini.place(x=550,y=660)
+labelvalini.place(x=550,y=680)
 
 option = tk.Label(root, text='-Option-', bg='white')
 option.place(x = 620, y = 195)
@@ -372,7 +371,7 @@ class restest():
 
 resfunc = restest()
 btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
-btnres.place(x=602, y=280)
+btnres.place(x=802, y=280)
 
 #gaussianの表示
 class gaussian():
@@ -396,7 +395,7 @@ class gaussian():
 
 gau = gaussian()
 btngau = tk.Button(root, text='Show Gaussian', command = gau._gauwin, width = 12)
-btngau.place(x= 602, y = 250)
+btngau.place(x= 802, y = 250)
 
 
 #軸範囲編集ウィンドウ
@@ -429,8 +428,8 @@ class axtest():
 	def axreset(self):
 		xf = -2.0
 		xt = 3.0
-		yf = -3.0
-		yt = 3.0
+		yf = -10.0
+		yt = 10.0
 		self.renewaxis(xf, xt, yf, yt)
 
 	def axisproper(self):
@@ -478,7 +477,7 @@ class axtest():
 
 axfunc = axtest()
 btnax = tk.Button(root, text='Axis Setting', command = axfunc.axisproper, width = 12)
-btnax.place(x= 602, y = 220)
+btnax.place(x= 802, y = 220)
 
 #インポートボタンの設置
 
@@ -523,7 +522,7 @@ buttonim.on_clicked(FileOpen)
 '''
 #Tkによるimportボタン
 btnim = tk.Button(root, text='import', command = FileOpen, width = 12)
-btnim.place(x = 602, y = 50)
+btnim.place(x = 802, y = 50)
 '''
 
 #リセットボタンの設置
