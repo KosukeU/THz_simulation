@@ -20,7 +20,10 @@ c1,c2,c3 = "blue","green","red"	#色の用意
 l1,l2,l3 = "gaussian","E_tmp","E"	#ラベルの用意
 #fig = plt.figure()
 
-fig, ax = plt.subplots(figsize=(6,5))
+figsize_px = np.array([700, 550])
+dpi=100
+figsize_inch = figsize_px / dpi
+fig, ax = plt.subplots(figsize=figsize_inch, dpi=dpi)
 figg, ax1 = plt.subplots(figsize=(6,4))
 #plt.subplots_adjust(left=0.25, bottom=0.35)
 
@@ -129,7 +132,7 @@ sli_alpha.on_changed(update)
 '''
 
 root = tk.Tk()
-root.geometry('1200x700+100+100')
+root.geometry('850x750+100+100')
 root.title(u'Terahertz Fitting')
 root.configure(bg='white')
 
@@ -193,7 +196,7 @@ buttonex = Button(exportax, 'export', color='gold', hovercolor='0.975')
 buttonex.on_clicked(WriteFile)
 '''
 btnex = tk.Button(root, text='export', command = createExportWindow, width = 12)
-btnex.place(x = 802, y = 90)
+btnex.place(x = 700, y = 90)
 
 def updatewaveform():
 	sj = valamp.get()
@@ -240,7 +243,7 @@ scamp = tk.Scale(root,
     orient=tk.HORIZONTAL,
     length=400,
     from_= 0.005,
-	resolution = 0.0005,
+	resolution = 0.001,
     to=0.15,
 	showvalue = 0,
 	command = updatetest
@@ -265,7 +268,7 @@ scblo = tk.Scale(root,
     orient=tk.HORIZONTAL,
     length=400,
     from_= 0.5,
-	resolution = 0.01,
+	resolution = 0.001,
     to=4.0,
 	showvalue = 0,
 	command = updatetest
@@ -290,7 +293,7 @@ screl = tk.Scale(root,
     orient=tk.HORIZONTAL,
     length=400,
     from_= 0.01,
-	resolution = 0.005,
+	resolution = 0.0001,
     to=3.0,
 	showvalue = 0,
 	command = updatetest
@@ -315,7 +318,7 @@ scini = tk.Scale(root,
     orient=tk.HORIZONTAL,
     length=400,
     from_= -2.0,
-	resolution = 0.01,
+	resolution = 0.001,
     to=2.0,
 	showvalue = 0,
 	command=updatetest
@@ -335,7 +338,7 @@ labelvalini = ttk.Label(
 labelvalini.place(x=550,y=680)
 
 option = tk.Label(root, text='-Option-', bg='white')
-option.place(x = 620, y = 195)
+option.place(x = 720, y = 195)
 
 class restest():
 	def _desreswin(self):
@@ -371,7 +374,7 @@ class restest():
 
 resfunc = restest()
 btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
-btnres.place(x=802, y=280)
+btnres.place(x=700, y=280)
 
 #gaussianの表示
 class gaussian():
@@ -395,7 +398,7 @@ class gaussian():
 
 gau = gaussian()
 btngau = tk.Button(root, text='Show Gaussian', command = gau._gauwin, width = 12)
-btngau.place(x= 802, y = 250)
+btngau.place(x= 700, y = 250)
 
 
 #軸範囲編集ウィンドウ
@@ -477,7 +480,7 @@ class axtest():
 
 axfunc = axtest()
 btnax = tk.Button(root, text='Axis Setting', command = axfunc.axisproper, width = 12)
-btnax.place(x= 802, y = 220)
+btnax.place(x= 700, y = 220)
 
 #インポートボタンの設置
 
@@ -498,21 +501,21 @@ def FileOpen():
 
 
 shortcut = tk.Label(root, text='-Shortcut-', bg='white')
-shortcut.place(x = 620, y = 375)
+shortcut.place(x = 720, y = 375)
 
 #Sma4ショートカット
 def openSma4():
 	subprocess.Popen("start C:\\PROGRA~2\\tsuzuki\\Sma4Win\\sma4win.exe", shell=True)
 
 btnsma4 = tk.Button(root, text='Start Sma4', command = openSma4, width = 12)
-btnsma4.place(x=602 , y=400)
+btnsma4.place(x=700 , y=400)
 
 #gnuplot ショートカット
 def opengnuplot():
 	subprocess.Popen("start C:\\PROGRA~1\\gnuplot\\bin\\wgnuplot.exe", shell=True)
 
 btnsma4 = tk.Button(root, text='Start Gnuplot', command = opengnuplot, width = 12)
-btnsma4.place(x=602 , y=430)
+btnsma4.place(x=700 , y=430)
 '''
 #matplotlibによるimportボタン(有効にするにはFileOpenの引数をeventに変更)
 importax = plt.axes([0.05, 0.8, 0.1, 0.04])
@@ -522,7 +525,7 @@ buttonim.on_clicked(FileOpen)
 '''
 #Tkによるimportボタン
 btnim = tk.Button(root, text='import', command = FileOpen, width = 12)
-btnim.place(x = 802, y = 50)
+btnim.place(x = 700, y = 50)
 '''
 
 #リセットボタンの設置
