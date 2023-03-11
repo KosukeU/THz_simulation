@@ -13,6 +13,8 @@ import os
 import subprocess
 import datetime
 from functools import partial
+import ctypes
+ctypes.windll.shcore.SetProcessDpiAwareness(0)
 
 mpl.use('tkAgg')
 
@@ -46,33 +48,26 @@ E_tmp = [0] * 5001
 gaussian_ld = [0] * 5001		#zero埋めした配列の準備
 
 def emission(j0, omegaB, gamma, alpha):
-	for t in range(-1000, 4000):
+	for t in range(-1000, 4001):
 			if t == 0:
-					E_tmp[t + 1001] = (np.cos(alpha) * 10**12 *10**3 + -gamma*np.exp(-gamma * t * 10**-12 * 10**-3) * np.cos(omegaB * t * 10**-12 * 10**-3 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-3) * np.sin(omegaB * t * 10**-12 * 10**-3 + alpha))*j0
+					E_tmp[t + 1000] = (np.cos(alpha) * 10**12 *10**3  -gamma*np.exp(-gamma * t * 10**-12 * 10**-3) * np.cos(omegaB * t * 10**-12 * 10**-3 + alpha)- omegaB *np.exp(-gamma * t * 10**-12 * 10**-3) * np.sin(omegaB * t * 10**-12 * 10**-3 + alpha))*j0
 			elif t>0:
-					E_tmp[t + 1001] = (-gamma*np.exp(-gamma * t * 10**-12 * 10**-3) * np.cos(omegaB * t * 10**-12 * 10**-3 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-3) * np.sin(omegaB * t * 10**-12 * 10**-3 + alpha))*j0
+					E_tmp[t + 1000] = (-gamma*np.exp(-gamma * t * 10**-12 * 10**-3) * np.cos(omegaB * t * 10**-12 * 10**-3 + alpha) - omegaB *np.exp(-gamma * t * 10**-12 * 10**-3) * np.sin(omegaB * t * 10**-12 * 10**-3 + alpha))*j0
 			else:
 					pass
 
 	a = np.log(2) * 4/(tm*10**-12)**2
 
-	for t in range(-1000, 4000):
-		gaussian_ld[t + 1001] = np.exp(-a * (t * 10**-12 * 10**-3)**2)
+	for t in range(-1000, 4001):
+		gaussian_ld[t + 1000] = np.exp(-a * (t * 10**-12 * 10**-3)**2)
 
-	E = np.convolve(E_tmp, gaussian_ld)# * j0
+	E = np.convolve(E_tmp, gaussian_ld)
 	return E, E_tmp, gaussian_ld
 
-
-#グラフの描画
-#ax1 = fig.add_subplot(3, 1, 1)
-#ax2 = fig.add_subplot(3, 1, 2)
-#ax3 = fig.add_subplot(1, 1, 1)
 
 t = np.round(np.linspace(-2, 8, 10001),3)
 tfg = np.round(np.linspace(-2, 8, 5001),3)
 
-#ax1.plot(gaussian_ld, color=c1, label=l1)
-#ax2.plot(E_tmp, color=c2, label=l2)
 Em1, E_tmp1, gaussian_ld = emission(j01, omegaB1, gamma1, alpha1)
 Em3 = Em1
 #軸の設定
@@ -87,8 +82,8 @@ ax.set_xlabel('Time (ps)')
 ax.set_ylabel('Amplitude (a.u.)')
 ax.grid('x=0')
 
-l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 0.5)
-dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=1)
+dt, = ax.plot(-3,0,"o", color="k", label='value of data', markersize=3)
+l,= ax.plot(t, Em1, color=c3, label=l3, linestyle='solid', linewidth = 1)
 
 ax1.set_xlim(xfrom,xto)
 ax1.set_xlabel('Time (ps)')
@@ -125,7 +120,7 @@ def active():#メインウィンドウ操作有効化関数
 	btngau.configure(state = "active")
 
 dt_now = datetime.datetime.now()
-basename = str(dt_now) + '_test' #ファイルをインポートしていない場合にはtestとして出力
+basename = str(dt_now.year)+'_'+str(dt_now.month)+'_'+str(dt_now.day)+'_'+str(dt_now.hour)+'_'+str(dt_now.minute) + '_test' #ファイルをインポートしていない場合にはtestとして出力
 dirname = r'C:\\Users\UedaKosuke\Documents\UEDA'
 
 def createExportWindow():
@@ -189,7 +184,7 @@ scamp = tk.Scale(root,
     length=400,
     from_= 0.005,
 	resolution = 0.001,
-    to=0.15,
+    to=0.3,
 	showvalue = 0,
 	command = updatetest
 )
@@ -214,7 +209,7 @@ scblo = tk.Scale(root,
     length=400,
     from_= 0.5,
 	resolution = 0.001,
-    to=4.0,
+    to=10.0,
 	showvalue = 0,
 	command = updatetest
 )
@@ -262,9 +257,9 @@ scini = tk.Scale(root,
     variable=valini,
     orient=tk.HORIZONTAL,
     length=400,
-    from_= -2.0,
+    from_= -1.58,
 	resolution = 0.001,
-    to=2.0,
+    to=1.58,
 	showvalue = 0,
 	command=updatetest
 )
@@ -303,7 +298,7 @@ class restest():
 		global timres
 		self.reswin = tk.Toplevel()
 		self.reswin.geometry('150x100+100+100')
-		self.reswin.title(u'EditTimeResolution')
+		self.reswin.title(u'Temporal Resolution')
 		self.reswin.configure(bg='white')
 		disable()
 		#root.configure(bg='gray')
@@ -318,7 +313,7 @@ class restest():
 		self.reswin.mainloop()
 
 resfunc = restest()
-btnres = tk.Button(root, text='EditTime'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
+btnres = tk.Button(root, text='Temporal'+'\n'+'Resolution', command=resfunc.reswindow, width = 12)
 btnres.place(x=700, y=280)
 
 #gaussianの表示
@@ -331,7 +326,7 @@ class gaussian():
 	def _gauwin(self):
 		self.gauwin = tk.Toplevel()
 		self.gauwin.geometry('600x400+800+300')
-		self.gauwin.title(u'Show Gaussian')
+		self.gauwin.title(u'Gaussian Func.')
 		disable()
 		g.set_ydata(gaussian_ld)
 		figg.canvas.draw_idle()
@@ -342,7 +337,7 @@ class gaussian():
 		self.gauwin.mainloop()
 
 gau = gaussian()
-btngau = tk.Button(root, text='Show Gaussian', command = gau._gauwin, width = 12)
+btngau = tk.Button(root, text='Gaussian Func.', command = gau._gauwin, width = 12)
 btngau.place(x= 700, y = 250)
 
 
@@ -389,28 +384,28 @@ class axtest():
 		disable()
 		xfromL = tk.Label(self.axwin, text='x axis  from :', bg='white')
 		xfromL.place(x=20, y=20)
-		xfuni = tk.Label(self.axwin, text='e-6', bg='white')
+		xfuni = tk.Label(self.axwin, text='(ps)', bg='white')
 		xfuni.place(x=124, y=20)
 		xfromE = tk.Entry(self.axwin, width=5)
 		xfromE.insert(0, xfrom)
 		xfromE.place(x=90, y=20)
 		xtoL = tk.Label(self.axwin, text='to :', bg='white')
 		xtoL.place(x=168, y=20)
-		xtuni = tk.Label(self.axwin, text='e-6', bg='white')
+		xtuni = tk.Label(self.axwin, text='(ps)', bg='white')
 		xtuni.place(x=224, y=20)
 		xtoE = tk.Entry(self.axwin, width=5)
 		xtoE.insert(0, xto)
 		xtoE.place(x=190, y=20)
 		yfromL = tk.Label(self.axwin, text='y axis  from :', bg='white')
 		yfromL.place(x=20, y=60)
-		yfuni = tk.Label(self.axwin, text='(ps)', bg='white')
+		yfuni = tk.Label(self.axwin, text='e-6', bg='white')
 		yfuni.place(x=124, y=60)
 		yfromE = tk.Entry(self.axwin, width=5)
 		yfromE.insert(0, yfrom)
 		yfromE.place(x=90, y=60)
 		ytoL = tk.Label(self.axwin, text='to :', bg='white')
 		ytoL.place(x=168, y=60)
-		ytuni = tk.Label(self.axwin, text='(ps)', bg='white')
+		ytuni = tk.Label(self.axwin, text='e-6', bg='white')
 		ytuni.place(x=224, y=60)
 		ytoE = tk.Entry(self.axwin, width=5)
 		ytoE.insert(0, yto)
